@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw } from 'lucide-react'
+import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw, Maximize2, Minimize2 } from 'lucide-react'
 import Image from 'next/image'
 import AuthHeader from '@/components/AuthHeader'
 import ShareButton from '@/components/ShareButton'
+import FullscreenImageModal from '@/components/FullscreenImageModal'
 import { useSession } from 'next-auth/react'
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [mode, setMode] = useState<'text-to-image' | 'image-to-image'>('text-to-image')
   const [user, setUser] = useState<any>(null)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
   const { data: session, status } = useSession()
 
   // Kullanıcı durumunu kontrol et
@@ -422,27 +424,63 @@ export default function Home() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
+                
                 <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
                   <p className="text-gray-300 text-sm truncate flex-1 mr-4">
                     <ImageIcon className="inline w-4 h-4 mr-2" />
                     {prompt}
                   </p>
                   <div className="flex items-center gap-2">
+                    {/* Tam Ekran/Küçültme Toggle Butonu */}
+                    <button
+                      onClick={() => setIsFullscreenOpen(!isFullscreenOpen)}
+                      className={`px-3 py-2 text-white rounded-lg transition-colors duration-200 flex items-center gap-2 text-sm ${
+                        isFullscreenOpen 
+                          ? 'bg-red-600 hover:bg-red-700' 
+                          : 'bg-blue-600 hover:bg-blue-700'
+                      }`}
+                      title={isFullscreenOpen ? 'Küçült' : 'Tam ekran'}
+                    >
+                      {isFullscreenOpen ? (
+                        <>
+                          <Minimize2 className="w-4 h-4" />
+                          <span className="hidden sm:inline">Küçült</span>
+                        </>
+                      ) : (
+                        <>
+                          <Maximize2 className="w-4 h-4" />
+                          <span className="hidden sm:inline">Tam Ekran</span>
+                        </>
+                      )}
+                    </button>
+                    
+                    {/* Paylaş Butonu */}
                     <ShareButton 
                       title={`AI ile oluşturduğum görsel: "${prompt}"`}
                       description={`Picture AI kullanarak "${prompt}" prompt'u ile oluşturduğum bu görseli görün! Siz de AI ile muhteşem görseller oluşturabilirsiniz.`}
                       className=""
                     />
+                    
+                    {/* İndirme Butonu */}
                     <button
                       onClick={handleDownload}
                       className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+                      title="Görseli indir"
                     >
                       <Download className="w-4 h-4" />
-                      İndir
+                      <span className="hidden sm:inline">İndir</span>
                     </button>
                   </div>
                 </div>
               </div>
+              
+              {/* Fullscreen Modal */}
+              <FullscreenImageModal
+                isOpen={isFullscreenOpen}
+                onClose={() => setIsFullscreenOpen(false)}
+                imageUrl={generatedImage}
+                prompt={prompt}
+              />
             </div>
           )}
         </div>

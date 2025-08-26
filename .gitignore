@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.pnpm-debug.log*
+
+# Environment files - NEVER COMMIT THESE!
+.env
+.env.*
+*.env
+env_temp.txt
+.env.backup
+.env.sample
+.env.example.local
+
+# Next.js build output
+.next/
+out/
+
+# Runtime data
+data/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Vercel
+.vercel
+
+# Security - Additional secret patterns
+*secret*
+*key*
+*password*
+*.pem
+*.p12
+*.pfx
+*.jks
+config/secrets/
+secrets/

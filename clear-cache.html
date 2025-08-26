@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Browser Cache</title>
+</head>
+<body>
+    <h1>🧹 Browser Cache Temizleme</h1>
+    <p>Bu sayfa CSP cache'ini temizlemek için oluşturuldu.</p>
+    
+    <script>
+        // Clear all possible cache and storage
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Clear sessionStorage
+        sessionStorage.clear();
+        
+        // Clear all cookies for this domain
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        
+        console.log("✅ Cache temizlendi! Artık Google OAuth'u test edebilirsiniz.");
+        alert("✅ Browser cache temizlendi!\n\nŞimdi yapmanız gerekenler:\n1. F5 ile sayfayı yenileyin\n2. http://localhost:3000 adresine gidin\n3. Google OAuth'u test edin");
+    </script>
+</body>
+</html>

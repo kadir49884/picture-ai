@@ -126,38 +126,67 @@ export async function POST(request: NextRequest) {
 
     let result;
     
-    if (mode === 'image-to-image') {
-      // FAL AI flux-pro/kontext/max modelini kullan (image-to-image)
-      result = await fal.subscribe('fal-ai/flux-pro/kontext/max', {
-        input: {
-          prompt: sanitizedPrompt,
-          image_url: imageUrl,
-          guidance_scale: 3.5,
-          num_images: 1,
-          output_format: 'jpeg',
-          safety_tolerance: '2'
-        },
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('Queue update:', update)
-        }
+    try {
+      if (mode === 'image-to-image') {
+        // FAL AI flux-pro/kontext/max modelini kullan (image-to-image)
+        console.log('🚀 Starting image-to-image generation with FAL AI')
+        console.log('📝 Prompt:', sanitizedPrompt)
+        console.log('🖼️ Image URL type:', imageUrl.startsWith('data:') ? 'Base64 data URL' : 'HTTP URL')
+        
+        result = await fal.subscribe('fal-ai/flux-pro/kontext/max', {
+          input: {
+            prompt: sanitizedPrompt,
+            image_url: imageUrl,
+            guidance_scale: 3.5,
+            num_images: 1,
+            output_format: 'jpeg'
+          },
+          logs: true,
+          onQueueUpdate: (update) => {
+            console.log('⏳ Queue update:', update)
+          }
+        })
+        
+        console.log('✅ FAL AI request completed')
+      } else {
+        // FAL AI flux-pro modelini kullan (text-to-image)
+        console.log('🚀 Starting text-to-image generation with FAL AI')
+        console.log('📝 Prompt:', sanitizedPrompt)
+        
+        result = await fal.subscribe('fal-ai/flux-pro', {
+          input: {
+            prompt: sanitizedPrompt,
+            image_size: 'landscape_4_3',
+            num_inference_steps: 28,
+            guidance_scale: 3.5,
+            num_images: 1,
+            enable_safety_checker: true
+          },
+          logs: true,
+          onQueueUpdate: (update) => {
+            console.log('⏳ Queue update:', update)
+          }
+        })
+        
+        console.log('✅ FAL AI request completed')
+      }
+    } catch (falError: any) {
+      console.error('❌ FAL AI API Error:', {
+        message: falError.message,
+        status: falError.status,
+        statusCode: falError.statusCode,
+        response: falError.response,
+        stack: falError.stack
       })
-    } else {
-      // FAL AI flux-pro modelini kullan (text-to-image)
-      result = await fal.subscribe('fal-ai/flux-pro', {
-        input: {
-          prompt: sanitizedPrompt,
-          image_size: 'landscape_4_3',
-          num_inference_steps: 28,
-          guidance_scale: 3.5,
-          num_images: 1,
-          enable_safety_checker: true
+      
+      return NextResponse.json(
+        { 
+          error: 'AI servisinde hata oluştu',
+          details: falError.message,
+          errorCode: falError.status || falError.statusCode || 'UNKNOWN'
         },
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('Queue update:', update)
-        }
-      })
+        { status: 500 }
+      )
     }
 
     console.log('FAL AI sonucu:', JSON.stringify(result, null, 2))

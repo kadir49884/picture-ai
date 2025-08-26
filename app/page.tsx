@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw } from 'lucide-react'
+import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw, Images } from 'lucide-react'
 import Image from 'next/image'
 import AuthHeader from '@/components/AuthHeader'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function Home() {
   const [prompt, setPrompt] = useState('')
@@ -234,7 +235,21 @@ export default function Home() {
 
       <div className="container max-w-4xl mx-auto relative z-10">
         {/* Auth Header */}
-        <div className="w-full flex justify-end items-center mb-8">
+        <div className="w-full flex justify-between items-center mb-8">
+          {/* Gallery Link */}
+          {(user || session?.user) && (
+            <Link 
+              href="/gallery"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-lg rounded-xl border border-white/20 text-white transition-all duration-200"
+            >
+              <Images className="w-5 h-5" />
+              <span className="font-medium">Galeri</span>
+            </Link>
+          )}
+          
+          {/* Spacer when no user */}
+          {!(user || session?.user) && <div></div>}
+          
           <AuthHeader userCredits={user?.credits} />
         </div>
 

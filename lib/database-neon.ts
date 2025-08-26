@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless'
-import type { User, Transaction, CreditPackage } from './database'
+import type { User, Transaction, CreditPackage, UserImage } from './database'
 
 export class NeonDatabase {
   private sql: ReturnType<typeof neon>
@@ -23,6 +23,24 @@ export class NeonDatabase {
       // Check if tables exist, create indexes if needed
       await this.sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`
       await this.sql`CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)`
+      
+      // Create user_images table for storing uploaded images
+      await this.sql`
+        CREATE TABLE IF NOT EXISTS user_images (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+          filename VARCHAR(255) NOT NULL,
+          original_name VARCHAR(255),
+          image_data TEXT NOT NULL, -- Base64 encoded image
+          mime_type VARCHAR(100) NOT NULL,
+          file_size INTEGER NOT NULL,
+          upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          is_active BOOLEAN DEFAULT true
+        )
+      `
+      
+      await this.sql`CREATE INDEX IF NOT EXISTS idx_user_images_user_id ON user_images(user_id)`
+      await this.sql`CREATE INDEX IF NOT EXISTS idx_user_images_upload_date ON user_images(upload_date)`
       
       console.log('✅ Neon database ready (using existing tables)')
     } catch (error) {
@@ -202,6 +220,83 @@ export class NeonDatabase {
     } catch (error) {
       console.error('❌ Error creating credit package:', error)
       throw error
+    }
+  }
+
+  // User Images operations
+  async saveUserImage(
+    userId: string | number,
+    filename: string,
+    originalName: string,
+    imageData: string,
+    mimeType: string,
+    fileSize: number
+  ): Promise<UserImage> {
+    try {
+      const result = await this.sql`
+        INSERT INTO user_images (user_id, filename, original_name, image_data, mime_type, file_size)
+        VALUES (${userId}, ${filename}, ${originalName}, ${imageData}, ${mimeType}, ${fileSize})
+        RETURNING *
+      `
+      
+      if (Array.isArray(result) && result.length > 0) {
+        console.log(`✅ Image saved for user ${userId}: ${filename} (${Math.round(fileSize/1024)}KB)`)
+        return result[0] as UserImage
+      }
+      throw new Error('Failed to save image - no result returned')
+    } catch (error) {
+      console.error('❌ Error saving user image:', error)
+      throw error
+    }
+  }
+
+  async getUserImages(userId: string | number, limit: number = 20): Promise<UserImage[]> {
+    try {
+      const result = await this.sql`
+        SELECT id, user_id, filename, original_name, mime_type, file_size, upload_date, is_active
+        FROM user_images 
+        WHERE user_id = ${userId} AND is_active = true
+        ORDER BY upload_date DESC 
+        LIMIT ${limit}
+      `
+      return result as UserImage[]
+    } catch (error) {
+      console.error('❌ Error getting user images:', error)
+      return []
+    }
+  }
+
+  async getUserImageById(imageId: string | number): Promise<UserImage | null> {
+    try {
+      const result = await this.sql`
+        SELECT * FROM user_images 
+        WHERE id = ${imageId} AND is_active = true
+        LIMIT 1
+      `
+      return Array.isArray(result) && result.length > 0 ? result[0] as UserImage : null
+    } catch (error) {
+      console.error('❌ Error getting user image by ID:', error)
+      return null
+    }
+  }
+
+  async deleteUserImage(imageId: string | number, userId: string | number): Promise<boolean> {
+    try {
+      const result = await this.sql`
+        UPDATE user_images 
+        SET is_active = false
+        WHERE id = ${imageId} AND user_id = ${userId}
+        RETURNING id
+      `
+      
+      if (Array.isArray(result) && result.length > 0) {
+        console.log(`✅ Image deleted: ${imageId}`)
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('❌ Error deleting user image:', error)
+      return false
     }
   }
 

@@ -38,6 +38,18 @@ export interface CreditPackage {
   active?: boolean
 }
 
+export interface UserImage {
+  id: string | number
+  user_id: string | number
+  filename: string
+  original_name?: string
+  image_data: string  // Base64 encoded
+  mime_type: string
+  file_size: number
+  upload_date: string
+  is_active?: boolean
+}
+
 // Use Neon PostgreSQL if DATABASE_URL is available, otherwise fallback to local JSON database
 const useNeonDB = !!(process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || process.env.POSTGRES_URL)
 
@@ -103,6 +115,43 @@ if (useNeonDB) {
 
     async incrementUserGenerated(userId: string | number): Promise<boolean> {
       console.log('Incrementing generated count (local DB):', userId)
+      return true
+    }
+
+    async saveUserImage(
+      userId: string | number,
+      filename: string,
+      originalName: string,
+      imageData: string,
+      mimeType: string,
+      fileSize: number
+    ): Promise<UserImage> {
+      console.log('Saving image (local DB):', filename)
+      return {
+        id: Date.now(),
+        user_id: userId,
+        filename,
+        original_name: originalName,
+        image_data: imageData,
+        mime_type: mimeType,
+        file_size: fileSize,
+        upload_date: new Date().toISOString(),
+        is_active: true
+      } as UserImage
+    }
+
+    async getUserImages(userId: string | number, limit: number = 20): Promise<UserImage[]> {
+      console.log('Getting user images (local DB):', userId)
+      return []
+    }
+
+    async getUserImageById(imageId: string | number): Promise<UserImage | null> {
+      console.log('Getting user image by ID (local DB):', imageId)
+      return null
+    }
+
+    async deleteUserImage(imageId: string | number, userId: string | number): Promise<boolean> {
+      console.log('Deleting user image (local DB):', imageId)
       return true
     }
 

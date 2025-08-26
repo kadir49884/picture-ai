@@ -126,7 +126,29 @@ export function validateImageUrl(url: string): ValidationResult {
     return result
   }
 
-  // URL format validation
+  // Base64 data URL handling
+  if (url.startsWith('data:')) {
+    // Check if it's a valid image data URL
+    if (!url.startsWith('data:image/')) {
+      result.isValid = false
+      result.errors.push('Only image data URLs are allowed')
+      return result
+    }
+    
+    // Size limit for data URLs (increased to 15MB for base64)
+    const sizeInBytes = url.length * 0.75 // Rough estimate for base64
+    if (sizeInBytes > 15 * 1024 * 1024) { // 15MB limit for base64
+      result.isValid = false
+      result.errors.push('Image data too large (max 15MB)')
+      return result
+    }
+    
+    // Valid data URL
+    console.log('✅ Base64 data URL validation passed, size:', Math.round(sizeInBytes / 1024), 'KB')
+    return result
+  }
+
+  // Regular HTTP/HTTPS URL validation
   try {
     const parsedUrl = new URL(url)
     
@@ -134,15 +156,6 @@ export function validateImageUrl(url: string): ValidationResult {
     if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
       result.isValid = false
       result.errors.push('Only HTTP/HTTPS URLs are allowed')
-    }
-
-    // Size limit for data URLs
-    if (url.startsWith('data:')) {
-      const sizeInBytes = url.length * 0.75 // Rough estimate for base64
-      if (sizeInBytes > 10 * 1024 * 1024) { // 10MB limit
-        result.isValid = false
-        result.errors.push('Image data too large (max 10MB)')
-      }
     }
 
   } catch (error) {

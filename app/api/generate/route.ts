@@ -57,8 +57,11 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      console.log('🔍 Image URL validation - Length:', imageUrl.length, 'Type:', imageUrl.startsWith('data:') ? 'Base64' : 'URL')
+      
       const imageValidation = validateImageUrl(imageUrl)
       if (!imageValidation.isValid) {
+        console.error('❌ Image URL validation failed:', imageValidation.errors)
         return NextResponse.json(
           { 
             error: 'Geçersiz görsel URL',
@@ -67,6 +70,8 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
+      
+      console.log('✅ Image URL validation passed')
     }
 
     // Google OAuth kullanıcı kontrolü

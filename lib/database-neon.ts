@@ -20,11 +20,28 @@ export class NeonDatabase {
     try {
       console.log('✅ Database connection established - using existing schema')
       
+      // Create user_uploads table for storing uploaded images
+      await this.sql`
+        CREATE TABLE IF NOT EXISTS user_uploads (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL,
+          image_data TEXT NOT NULL,
+          image_size INTEGER,
+          prompt_used TEXT,
+          generated_image_url TEXT,
+          upload_type VARCHAR(50) DEFAULT 'image-to-image',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+      `
+      
       // Check if tables exist, create indexes if needed
       await this.sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`
       await this.sql`CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)`
+      await this.sql`CREATE INDEX IF NOT EXISTS idx_user_uploads_user_id ON user_uploads(user_id)`
+      await this.sql`CREATE INDEX IF NOT EXISTS idx_user_uploads_created_at ON user_uploads(created_at)`
       
-      console.log('✅ Neon database ready (using existing tables)')
+      console.log('✅ Neon database ready (using existing tables + user_uploads table)')
     } catch (error) {
       console.error('Database initialization error:', error)
       throw error
@@ -206,7 +223,7 @@ export class NeonDatabase {
   }
 
   // Use user credit (combines deduct credit and create transaction)
-  async useUserCredit(userId: string | number, prompt: string): Promise<boolean> {
+  async useUserCredit(userId: string | number, prompt: string, imageData?: string): Promise<boolean> {
     try {
       // Get user first to check credits
       const user = await this.getUserById(String(userId))
@@ -236,12 +253,112 @@ export class NeonDatabase {
         VALUES (${userId}, 'usage', -1, 1, ${prompt})
       `
       
+      // Save uploaded image if provided (for image-to-image)
+      if (imageData) {
+        await this.saveUserUpload(userId, imageData, prompt)
+      }
+      
       const updatedUser = result[0] as any
       console.log(`✅ Credit used successfully - User: ${userId}, Remaining credits: ${updatedUser.credits}, Total generated: ${updatedUser.total_generated}`)
       return true
     } catch (error) {
       console.error('❌ Error using user credit:', error)
       return false
+    }
+  }
+
+  // Save user uploaded image (for admin monitoring)
+  async saveUserUpload(
+    userId: string | number, 
+    imageData: string, 
+    prompt?: string, 
+    generatedImageUrl?: string
+  ): Promise<number | null> {
+    try {
+      // Calculate image size (rough estimate for base64)
+      const imageSize = Math.round(imageData.length * 0.75)
+      
+      const result = await this.sql`
+        INSERT INTO user_uploads (user_id, image_data, image_size, prompt_used, generated_image_url)
+        VALUES (${userId}, ${imageData}, ${imageSize}, ${prompt || null}, ${generatedImageUrl || null})
+        RETURNING id
+      `
+      
+      if (Array.isArray(result) && result.length > 0) {
+        console.log(`✅ User upload saved - User: ${userId}, Size: ${Math.round(imageSize/1024)}KB`)
+        return (result[0] as any).id
+      }
+      return null
+    } catch (error) {
+      console.error('❌ Error saving user upload:', error)
+      return null
+    }
+  }
+
+  // Get all user uploads (ADMIN ONLY)
+  async getAllUserUploads(limit: number = 50, offset: number = 0): Promise<any[]> {
+    try {
+      const result = await this.sql`
+        SELECT 
+          u.id,
+          u.user_id,
+          users.email,
+          u.image_size,
+          u.prompt_used,
+          u.generated_image_url,
+          u.upload_type,
+          u.created_at,
+          SUBSTRING(u.image_data, 1, 50) as image_preview
+        FROM user_uploads u
+        JOIN users ON u.user_id = users.id
+        ORDER BY u.created_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `
+      return result as any[]
+    } catch (error) {
+      console.error('❌ Error getting user uploads:', error)
+      return []
+    }
+  }
+
+  // Get specific user upload with full image data (ADMIN ONLY)
+  async getUserUploadById(uploadId: number): Promise<any | null> {
+    try {
+      const result = await this.sql`
+        SELECT 
+          u.*,
+          users.email
+        FROM user_uploads u
+        JOIN users ON u.user_id = users.id
+        WHERE u.id = ${uploadId}
+      `
+      return Array.isArray(result) && result.length > 0 ? result[0] : null
+    } catch (error) {
+      console.error('❌ Error getting user upload by ID:', error)
+      return null
+    }
+  }
+
+  // Get upload statistics (ADMIN ONLY)
+  async getUploadStats(): Promise<any> {
+    try {
+      const result = await this.sql`
+        SELECT 
+          COUNT(*) as total_uploads,
+          COUNT(DISTINCT user_id) as unique_users,
+          SUM(image_size) as total_size_bytes,
+          AVG(image_size) as avg_size_bytes,
+          DATE_TRUNC('day', created_at) as upload_date,
+          COUNT(*) as daily_count
+        FROM user_uploads
+        GROUP BY DATE_TRUNC('day', created_at)
+        ORDER BY upload_date DESC
+        LIMIT 30
+      `
+      return result
+    } catch (error) {
+      console.error('❌ Error getting upload stats:', error)
+      return []
     }
   }
 

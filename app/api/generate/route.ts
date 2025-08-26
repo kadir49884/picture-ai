@@ -115,8 +115,9 @@ export async function POST(request: NextRequest) {
 
     console.log(`${mode === 'image-to-image' ? 'Görsel düzenleniyor' : 'Görsel oluşturuluyor'}, kullanıcı:`, user.email, 'kredi:', user.credits, 'prompt:', sanitizedPrompt)
 
-    // Krediyi kullan (AI çağrısı öncesi)
-    const creditUsed = await database.useUserCredit(user.id, sanitizedPrompt)
+    // Krediyi kullan (AI çağrısı öncesi) - image-to-image modunda yüklenen görseli de kaydet
+    const imageDataForSaving = (mode === 'image-to-image' && imageUrl?.startsWith('data:')) ? imageUrl : undefined
+    const creditUsed = await database.useUserCredit(user.id, sanitizedPrompt, imageDataForSaving)
     if (!creditUsed) {
       return NextResponse.json(
         { error: 'Kredi kullanılamadı, tekrar deneyin' },
@@ -195,12 +196,30 @@ export async function POST(request: NextRequest) {
     const images = (result as any)?.data?.images || (result as any)?.images
     
     if (images && images.length > 0) {
-      // Güncel kullanıcı bilgilerini getir (krediactallemesi için)
+      const generatedImageUrl = images[0].url
+      
+      // Eğer image-to-image modunda upload kaydedilmişse, generated image URL'sini de güncelleyelim
+      if (mode === 'image-to-image' && imageDataForSaving) {
+        try {
+          // Son upload'u bul ve generated image URL'sini güncelleyim (daha iyi bir yöntem için upload ID'si döndürülebilir)
+          await database.sql`
+            UPDATE user_uploads 
+            SET generated_image_url = ${generatedImageUrl}
+            WHERE user_id = ${user.id} 
+            AND created_at = (SELECT MAX(created_at) FROM user_uploads WHERE user_id = ${user.id})
+          `
+          console.log('✅ Generated image URL saved to database')
+        } catch (error) {
+          console.error('❌ Error updating generated image URL:', error)
+        }
+      }
+      
+      // Güncel kullanıcı bilgilerini getir (kredi güncellemesi için)
       const updatedUser = await database.getUserByEmail(session.user.email)
       
       return NextResponse.json({
         success: true,
-        imageUrl: images[0].url,
+        imageUrl: generatedImageUrl,
         prompt: sanitizedPrompt,
         remainingCredits: updatedUser?.credits || 0
       })

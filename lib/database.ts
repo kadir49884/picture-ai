@@ -106,9 +106,38 @@ if (useNeonDB) {
       return true
     }
 
-    async useUserCredit(userId: string | number, prompt: string): Promise<boolean> {
+    async useUserCredit(userId: string | number, prompt: string, imageData?: string): Promise<boolean> {
       console.log('Using credit (local DB):', userId, prompt)
+      if (imageData) {
+        console.log('Image uploaded (local DB):', Math.round(imageData.length * 0.75 / 1024), 'KB')
+      }
       return true
+    }
+
+    async getAllUserUploads(limit: number = 50, offset: number = 0): Promise<any[]> {
+      console.log('Getting uploads (local DB)')
+      return [] // Mock data for development
+    }
+
+    async getUserUploadById(uploadId: number): Promise<any | null> {
+      console.log('Getting upload by ID (local DB):', uploadId)
+      return null
+    }
+
+    async getUploadStats(): Promise<any> {
+      console.log('Getting upload stats (local DB)')
+      return []
+    }
+
+    async saveUserUpload(userId: string | number, imageData: string, prompt?: string): Promise<number | null> {
+      console.log('Saving upload (local DB):', userId, Math.round(imageData.length * 0.75 / 1024), 'KB')
+      return 1 // Mock ID
+    }
+
+    // Add sql property for compatibility
+    sql = async (query: any) => {
+      console.log('SQL query (local DB):', query)
+      return []
     }
 
     async healthCheck(): Promise<boolean> {

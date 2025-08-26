@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import AuthHeader from '@/components/AuthHeader'
+import ShareButton from '@/components/ShareButton'
 import { useSession } from 'next-auth/react'
 
 export default function Home() {
@@ -233,8 +234,9 @@ export default function Home() {
       </div>
 
       <div className="container max-w-4xl mx-auto relative z-10">
-        {/* Auth Header */}
-        <div className="w-full flex justify-end items-center mb-8">
+        {/* Header with Auth and Share */}
+        <div className="w-full flex justify-between items-center mb-8">
+          <ShareButton className="" />
           <AuthHeader userCredits={user?.credits} />
         </div>
 
@@ -420,18 +422,25 @@ export default function Home() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
                   <p className="text-gray-300 text-sm truncate flex-1 mr-4">
                     <ImageIcon className="inline w-4 h-4 mr-2" />
                     {prompt}
                   </p>
-                  <button
-                    onClick={handleDownload}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    İndir
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <ShareButton 
+                      title={`AI ile oluşturduğum görsel: "${prompt}"`}
+                      description={`Picture AI kullanarak "${prompt}" prompt'u ile oluşturduğum bu görseli görün! Siz de AI ile muhteşem görseller oluşturabilirsiniz.`}
+                      className=""
+                    />
+                    <button
+                      onClick={handleDownload}
+                      className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      İndir
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -439,8 +448,31 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-12 text-gray-400">
-          <p>FAL AI Flux Pro ile güçlendirilmiştir</p>
+        <div className="mt-12 text-center">
+          <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+            {/* Main Footer Content */}
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-400" />
+                <span className="text-white font-medium">Picture AI'yi Paylaş</span>
+              </div>
+              <p className="text-gray-400 text-sm max-w-md">
+                Arkadaşlarınızla paylaşın ve onlar da AI ile muhteşem görseller oluştursun!
+              </p>
+              <ShareButton 
+                title="Picture AI - AI ile Muhteşem Görseller Oluştur"
+                description="Hayal gücünüzü gerçeğe dönüştürün! Picture AI ile sadece birkaç kelime yazarak profesyonel kalitede görseller oluşturun. Ücretsiz deneyin!"
+                className=""
+              />
+            </div>
+            
+            {/* Divider */}
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-gray-400 text-sm">
+                <span className="text-purple-400">FAL AI Flux Pro</span> ile güçlendirilmiştir
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

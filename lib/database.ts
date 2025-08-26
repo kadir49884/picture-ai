@@ -72,7 +72,7 @@ if (useNeonDB) {
         id: Date.now(),
         email,
         auth_type: authType,
-        credits: 10,
+        credits: 3,
         total_generated: 0,
         created_at: new Date().toISOString()
       }
@@ -85,7 +85,7 @@ if (useNeonDB) {
       return {
         id: 1,
         email,
-        credits: 10,
+        credits: 3,
         total_generated: 0,
         created_at: new Date().toISOString()
       } as User

@@ -1,8 +1,6 @@
 ---
-title: Türkçe Cevap Ver
-trigger: automatic
-alwaysApply: true
-description: Kullanıcının sorularına her zaman Türkçe cevap ver
+trigger: manual
+alwaysApply: false
 ---
 
 # Türkçe Cevap Kuralı

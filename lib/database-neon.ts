@@ -60,7 +60,7 @@ export class NeonDatabase {
     try {
       const result = await this.sql`
         INSERT INTO users (email, auth_type, password_hash, credits, total_generated)
-        VALUES (${email}, ${authType}, ${passwordHash || null}, 10, 0)
+        VALUES (${email}, ${authType}, ${passwordHash || null}, 3, 0)
         RETURNING *
       `
       console.log('✅ User created successfully:', email)

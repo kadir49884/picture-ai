@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Share2, Copy, Twitter, MessageCircle, Mail, X, Check, Linkedin } from 'lucide-react'
 
 interface ShareButtonProps {
@@ -18,33 +18,8 @@ export default function ShareButton({
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [dropdownPosition, setDropdownPosition] = useState<'left' | 'right'>('right')
   const buttonRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
-  // Dropdown pozisyonunu hesapla
-  useEffect(() => {
-    if (isOpen && buttonRef.current) {
-      const buttonRect = buttonRef.current.getBoundingClientRect()
-      const viewportWidth = window.innerWidth
-      const dropdownWidth = 288 // w-72 = 18rem = 288px
-      
-      // Mobilde (768px altı) her zaman sağdan hizala
-      if (viewportWidth < 768) {
-        setDropdownPosition('right')
-        return
-      }
-      
-      // Desktop'ta butonun sağında yeterli alan var mı?
-      const spaceOnRight = viewportWidth - buttonRect.right
-      
-      if (spaceOnRight < dropdownWidth) {
-        setDropdownPosition('left')
-      } else {
-        setDropdownPosition('right')
-      }
-    }
-  }, [isOpen])
 
   const shareData = {
     title,
@@ -127,34 +102,26 @@ export default function ShareButton({
       {/* Share Menu */}
       {isOpen && (
         <>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-40" 
-            onClick={() => setIsOpen(false)}
-          />
-          
           {/* Share Dropdown */}
           <div 
             ref={dropdownRef}
-            className={`absolute top-full mt-2 w-72 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto ${
-              dropdownPosition === 'left' ? 'right-0' : 'right-0 md:left-0'
-            }`}
+            className="fixed top-0 left-0 w-full h-full bg-black/40 backdrop-blur-md z-40 flex items-start justify-end p-4 pt-16"
             style={{
-              maxWidth: 'calc(100vw - 2rem)', // Viewport'tan taşmasın
-              minWidth: '280px'
+              display: isOpen ? 'flex' : 'none'
             }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-semibold text-sm">Paylaş</h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors p-1"
-                aria-label="Kapat"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+            <div className="w-80 max-w-full bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl p-4 shadow-2xl max-h-96 overflow-y-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-white font-semibold text-sm">Paylaş</h3>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-400 hover:text-white transition-colors p-1"
+                  aria-label="Kapat"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
             {/* Native Share (if supported) */}
             {canNativeShare && (
@@ -218,6 +185,7 @@ export default function ShareButton({
               <p className="text-xs text-gray-400 truncate">{url}</p>
             </div>
           </div>
+        </div>
         </>
       )}
     </div>

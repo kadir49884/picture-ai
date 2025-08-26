@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless'
-import type { User, Transaction, CreditPackage } from './database'
+import type { User, Transaction } from './database'
 
 export class NeonDatabase {
   private sql: ReturnType<typeof neon>
@@ -164,44 +164,44 @@ export class NeonDatabase {
     }
   }
 
-  // Credit package operations  
-  async getCreditPackages(): Promise<CreditPackage[]> {
+  // Credit system method for deducting credits and recording transactions
+  async useUserCredit(userId: string | number, prompt: string): Promise<boolean> {
     try {
-      const result = await this.sql`
-        SELECT *, 
-               COALESCE(active, is_active) as is_active_resolved,
-               COALESCE(price_usd, price::decimal / 100) as price_usd_resolved
-        FROM credit_packages 
-        WHERE COALESCE(active, is_active, true) = true 
-        ORDER BY credits ASC
-      `
-      return result as CreditPackage[]
-    } catch (error) {
-      console.error('❌ Error getting credit packages:', error)
-      return []
-    }
-  }
-
-  async createCreditPackage(
-    name: string,
-    credits: number,
-    priceUsd: number,
-    stripePriceId?: string
-  ): Promise<CreditPackage> {
-    try {
-      const result = await this.sql`
-        INSERT INTO credit_packages (name, credits, price, price_usd, is_active, active, stripe_price_id)
-        VALUES (${name}, ${credits}, ${Math.round(priceUsd * 100)}, ${priceUsd}, true, true, ${stripePriceId || null})
-        RETURNING *
-      `
-      // Ensure proper type checking for result access
-      if (Array.isArray(result) && result.length > 0) {
-        return result[0] as CreditPackage
+      const user = await this.getUserById(String(userId))
+      if (!user || user.credits < 1) {
+        console.log(`❌ Insufficient credits - User: ${userId}, Credits: ${user?.credits || 0}`)
+        return false
       }
-      throw new Error('Failed to create credit package - no result returned')
+
+      // Deduct credit and increment generation count in one atomic operation
+      const result = await this.sql`
+        UPDATE users 
+        SET credits = credits - 1, 
+            total_generated = total_generated + 1, 
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ${userId} AND credits >= 1
+        RETURNING credits, total_generated
+      `
+      
+      if (!Array.isArray(result) || result.length === 0) {
+        console.error('❌ Failed to deduct credit - insufficient credits or user not found')
+        return false
+      }
+
+      // Record the transaction
+      await this.createTransaction(
+        userId,
+        'usage',
+        1,
+        `Image generation: ${prompt.substring(0, 100)}${prompt.length > 100 ? '...' : ''}`
+      )
+
+      const updatedUser = result[0] as any
+      console.log(`✅ Credit used successfully - User: ${userId}, Remaining: ${updatedUser.credits}, Total generated: ${updatedUser.total_generated}`)
+      return true
     } catch (error) {
-      console.error('❌ Error creating credit package:', error)
-      throw error
+      console.error('❌ Error using user credit:', error)
+      return false
     }
   }
 

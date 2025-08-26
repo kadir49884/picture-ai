@@ -106,6 +106,11 @@ if (useNeonDB) {
       return true
     }
 
+    async useUserCredit(userId: string | number, prompt: string): Promise<boolean> {
+      console.log('Using credit (local DB):', userId, prompt)
+      return true
+    }
+
     async healthCheck(): Promise<boolean> {
       return true
     }

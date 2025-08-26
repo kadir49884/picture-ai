@@ -205,6 +205,46 @@ export class NeonDatabase {
     }
   }
 
+  // Use user credit (combines deduct credit and create transaction)
+  async useUserCredit(userId: string | number, prompt: string): Promise<boolean> {
+    try {
+      // Get user first to check credits
+      const user = await this.getUserById(String(userId))
+      if (!user || user.credits < 1) {
+        console.log(`❌ Insufficient credits - User: ${userId}, Credits: ${user?.credits || 0}`)
+        return false
+      }
+
+      // Deduct credit and increment generated count in one transaction
+      const result = await this.sql`
+        UPDATE users 
+        SET credits = credits - 1, 
+            total_generated = total_generated + 1, 
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ${userId} AND credits >= 1
+        RETURNING credits, total_generated
+      `
+      
+      if (!Array.isArray(result) || result.length === 0) {
+        console.error('❌ Failed to deduct credit - insufficient credits or user not found')
+        return false
+      }
+      
+      // Create transaction record
+      await this.sql`
+        INSERT INTO transactions (user_id, type, credits, amount, description)
+        VALUES (${userId}, 'usage', -1, 1, ${prompt})
+      `
+      
+      const updatedUser = result[0] as any
+      console.log(`✅ Credit used successfully - User: ${userId}, Remaining credits: ${updatedUser.credits}, Total generated: ${updatedUser.total_generated}`)
+      return true
+    } catch (error) {
+      console.error('❌ Error using user credit:', error)
+      return false
+    }
+  }
+
   // Health check
   async healthCheck(): Promise<boolean> {
     try {

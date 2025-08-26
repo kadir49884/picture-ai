@@ -1,0 +1,5 @@
+[33ma7b8759[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Replace NextAuth with custom Google OAuth implementation
+[33m010e8de[m Fix NextAuth route handlers and secure cookies for production
+[33m414e49c[m Fix NextAuth production issues - Add error handling and session configuration
+[33m7289909[m Add vercel.json for routing
+[33m43ff0f1[m Add fallback CSS for better styling in production

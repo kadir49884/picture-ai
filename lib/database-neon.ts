@@ -15,54 +15,16 @@ export class NeonDatabase {
     this.sql = neon(connectionString)
   }
 
-  // Initialize database tables
+  // Initialize database tables (compatible with existing integer ID schema)
   async initialize(): Promise<void> {
     try {
-      // Create users table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS users (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          email VARCHAR(255) UNIQUE NOT NULL,
-          password_hash VARCHAR(255),
-          auth_type VARCHAR(50) NOT NULL DEFAULT 'email',
-          credits INTEGER DEFAULT 10,
-          total_generated INTEGER DEFAULT 0,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-      `
-
-      // Create transactions table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS transactions (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-          type VARCHAR(50) NOT NULL,
-          amount INTEGER NOT NULL,
-          description TEXT,
-          stripe_payment_intent_id VARCHAR(255),
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-      `
-
-      // Create credit_packages table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS credit_packages (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          name VARCHAR(100) NOT NULL,
-          credits INTEGER NOT NULL,
-          price_usd DECIMAL(10,2) NOT NULL,
-          stripe_price_id VARCHAR(255),
-          active BOOLEAN DEFAULT true,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-      `
-
-      // Create index for better performance
+      console.log('✅ Database connection established - using existing schema')
+      
+      // Check if tables exist, create indexes if needed
       await this.sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`
       await this.sql`CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)`
-
-      console.log('Neon database initialized successfully')
+      
+      console.log('✅ Neon database ready (using existing tables)')
     } catch (error) {
       console.error('Database initialization error:', error)
       throw error
@@ -101,19 +63,19 @@ export class NeonDatabase {
         VALUES (${email}, ${authType}, ${passwordHash || null}, 10, 0)
         RETURNING *
       `
-      console.log('User created successfully:', email)
+      console.log('✅ User created successfully:', email)
       // Ensure proper type checking for result access
       if (Array.isArray(result) && result.length > 0) {
         return result[0] as User
       }
       throw new Error('Failed to create user - no result returned')
     } catch (error) {
-      console.error('Error creating user:', error)
+      console.error('❌ Error creating user:', error)
       throw error
     }
   }
 
-  async updateUserCredits(userId: string, credits: number): Promise<boolean> {
+  async updateUserCredits(userId: string | number, credits: number): Promise<boolean> {
     try {
       await this.sql`
         UPDATE users 
@@ -122,12 +84,12 @@ export class NeonDatabase {
       `
       return true
     } catch (error) {
-      console.error('Error updating user credits:', error)
+      console.error('❌ Error updating user credits:', error)
       return false
     }
   }
 
-  async incrementUserGenerated(userId: string): Promise<boolean> {
+  async incrementUserGenerated(userId: string | number): Promise<boolean> {
     try {
       await this.sql`
         UPDATE users 
@@ -136,12 +98,12 @@ export class NeonDatabase {
       `
       return true
     } catch (error) {
-      console.error('Error incrementing user generated count:', error)
+      console.error('❌ Error incrementing user generated count:', error)
       return false
     }
   }
 
-  async deductCredits(userId: string, amount: number): Promise<boolean> {
+  async deductCredits(userId: string | number, amount: number): Promise<boolean> {
     try {
       const result = await this.sql`
         UPDATE users 
@@ -151,20 +113,20 @@ export class NeonDatabase {
       `
       
       if (!Array.isArray(result) || result.length === 0) {
-        console.error('Insufficient credits or user not found')
+        console.error('❌ Insufficient credits or user not found')
         return false
       }
       
-      console.log(`Credits deducted successfully. Remaining: ${(result[0] as any).credits}`)
+      console.log(`✅ Credits deducted successfully. Remaining: ${(result[0] as any).credits}`)
       return true
     } catch (error) {
-      console.error('Error deducting credits:', error)
+      console.error('❌ Error deducting credits:', error)
       return false
     }
   }
 
   async createTransaction(
-    userId: string,
+    userId: string | number,
     type: string,
     amount: number,
     description?: string,
@@ -172,8 +134,8 @@ export class NeonDatabase {
   ): Promise<Transaction> {
     try {
       const result = await this.sql`
-        INSERT INTO transactions (user_id, type, amount, description, stripe_payment_intent_id)
-        VALUES (${userId}, ${type}, ${amount}, ${description || null}, ${stripePaymentIntentId || null})
+        INSERT INTO transactions (user_id, type, credits, amount, description, stripe_payment_intent_id)
+        VALUES (${userId}, ${type}, ${amount}, ${amount}, ${description || null}, ${stripePaymentIntentId || null})
         RETURNING *
       `
       // Ensure proper type checking for result access
@@ -182,12 +144,12 @@ export class NeonDatabase {
       }
       throw new Error('Failed to create transaction - no result returned')
     } catch (error) {
-      console.error('Error creating transaction:', error)
+      console.error('❌ Error creating transaction:', error)
       throw error
     }
   }
 
-  async getUserTransactions(userId: string, limit: number = 50): Promise<Transaction[]> {
+  async getUserTransactions(userId: string | number, limit: number = 50): Promise<Transaction[]> {
     try {
       const result = await this.sql`
         SELECT * FROM transactions 
@@ -197,22 +159,25 @@ export class NeonDatabase {
       `
       return result as Transaction[]
     } catch (error) {
-      console.error('Error getting user transactions:', error)
+      console.error('❌ Error getting user transactions:', error)
       return []
     }
   }
 
-  // Credit package operations
+  // Credit package operations  
   async getCreditPackages(): Promise<CreditPackage[]> {
     try {
       const result = await this.sql`
-        SELECT * FROM credit_packages 
-        WHERE active = true 
+        SELECT *, 
+               COALESCE(active, is_active) as is_active_resolved,
+               COALESCE(price_usd, price::decimal / 100) as price_usd_resolved
+        FROM credit_packages 
+        WHERE COALESCE(active, is_active, true) = true 
         ORDER BY credits ASC
       `
       return result as CreditPackage[]
     } catch (error) {
-      console.error('Error getting credit packages:', error)
+      console.error('❌ Error getting credit packages:', error)
       return []
     }
   }
@@ -225,8 +190,8 @@ export class NeonDatabase {
   ): Promise<CreditPackage> {
     try {
       const result = await this.sql`
-        INSERT INTO credit_packages (name, credits, price_usd, stripe_price_id)
-        VALUES (${name}, ${credits}, ${priceUsd}, ${stripePriceId || null})
+        INSERT INTO credit_packages (name, credits, price, price_usd, is_active, active, stripe_price_id)
+        VALUES (${name}, ${credits}, ${Math.round(priceUsd * 100)}, ${priceUsd}, true, true, ${stripePriceId || null})
         RETURNING *
       `
       // Ensure proper type checking for result access
@@ -235,7 +200,7 @@ export class NeonDatabase {
       }
       throw new Error('Failed to create credit package - no result returned')
     } catch (error) {
-      console.error('Error creating credit package:', error)
+      console.error('❌ Error creating credit package:', error)
       throw error
     }
   }

@@ -30,7 +30,7 @@ export default function FullscreenImageModal({
       </button>
 
       {/* Image Container */}
-      <div className="absolute inset-0 flex items-center justify-center px-2 py-6">
+      <div className="absolute inset-0 flex items-center justify-center px-2 py-2 md:px-1 md:py-3">
         <Image
           src={imageUrl}
           alt={prompt}

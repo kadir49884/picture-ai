@@ -175,7 +175,6 @@ export default function Home() {
       }
 
       if (data.success && data.imageUrl) {
-        console.log('🖼️ Generated image URL:', data.imageUrl)
         setGeneratedImage(data.imageUrl)
         
         // Kullanıcının kredi bilgisini güncelle
@@ -416,14 +415,14 @@ export default function Home() {
           {generatedImage && (
             <div className="mt-8 fade-in">
               <div className="relative bg-black/20 rounded-xl p-4 border border-white/20">
-                <div className="relative w-full rounded-lg bg-black/10 flex items-center justify-center min-h-[250px] md:min-h-[300px] max-h-[70vh] md:max-h-[80vh]">
+                <div className="relative w-full rounded-lg overflow-hidden">
                   <Image
                     src={generatedImage}
                     alt="Oluşturulan görsel"
                     width={1152}
                     height={896}
-                    className="object-contain rounded-lg max-w-full max-h-full w-auto h-auto"
-                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 70vw, 50vw"
+                    className="w-full h-auto rounded-lg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
                     priority
                   />
                 </div>

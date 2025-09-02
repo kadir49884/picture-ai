@@ -175,6 +175,7 @@ export default function Home() {
       }
 
       if (data.success && data.imageUrl) {
+        console.log('🖼️ Generated image URL:', data.imageUrl)
         setGeneratedImage(data.imageUrl)
         
         // Kullanıcının kredi bilgisini güncelle

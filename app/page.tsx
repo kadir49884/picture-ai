@@ -27,7 +27,7 @@ export default function Home() {
         // Google OAuth kullanıcısı varsa bilgilerini al
         fetchUserData()
       } else {
-        // Normal auth kontrolü yap
+        // Normal auth kontrolü yap.
         checkAuthStatus()
       }
     }

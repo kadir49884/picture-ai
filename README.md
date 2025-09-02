@@ -1,10 +1,10 @@
 # Picture AI - Görsel Oluşturucu
 
-FAL AI'ın Flux Pro modeliyle güçlendirilmiş modern bir görsel oluşturma uygulaması.
+FAL AI'ın Flux Pro ve Nano-Banana/Edit modelleriyle güçlendirilmiş modern bir görsel oluşturma uygulaması.
 
 ## Özellikler
 
-- 🎨 **AI ile Görsel Oluşturma**: FAL AI Flux Pro/Kontext/Max modeli
+- 🎨 **AI ile Görsel Oluşturma**: FAL AI Flux Pro (text-to-image) + Nano-Banana/Edit (image editing)
 - ✨ **Modern UI**: Tailwind CSS ile responsive tasarım
 - 🔐 **Güvenli Giriş**: Google OAuth entegrasyonu
 - 💳 **Kredi Sistemi**: Stripe ile ödeme entegrasyonu
@@ -91,14 +91,22 @@ Google Cloud Console'da:
 
 ## API Kullanımı
 
-Uygulama FAL AI'ın `fal-ai/flux-pro/kontext/max` modelini kullanır:
+Uygulama hibrit AI sistemi kullanır:
+
+### **Text-to-Image: FAL AI Flux Pro**
 
 - **Image Size**: landscape_4_3
 - **Inference Steps**: 28
 - **Guidance Scale**: 3.5
 - **Output Format**: JPEG
-- **Quality**: 95%
 - **Safety Checker**: Aktif
+
+### **Image-to-Image: FAL AI Nano-Banana/Edit**
+
+- **Engine**: Gemini-powered
+- **Speed**: Ultra-fast (nano)
+- **Multi-image**: Desteklenir
+- **Editing**: Gelişmiş görsel düzenleme
 
 ## Lisans
 

@@ -128,26 +128,24 @@ export async function POST(request: NextRequest) {
     
     try {
       if (mode === 'image-to-image') {
-        // FAL AI flux-pro/kontext/max modelini kullan (image-to-image)
-        console.log('🚀 Starting image-to-image generation with FAL AI')
+        // FAL AI nano-banana/edit modelini kullan (image editing)
+        console.log('🍌 Starting image editing with Nano-Banana/Edit model')
         console.log('📝 Prompt:', sanitizedPrompt)
         console.log('🖼️ Image URL type:', imageUrl.startsWith('data:') ? 'Base64 data URL' : 'HTTP URL')
         
-        result = await fal.subscribe('fal-ai/flux-pro/kontext/max', {
+        result = await fal.subscribe('fal-ai/nano-banana/edit', {
           input: {
             prompt: sanitizedPrompt,
-            image_url: imageUrl,
-            guidance_scale: 3.5,
-            num_images: 1,
-            output_format: 'jpeg'
+            image_urls: [imageUrl], // Nano-banana çoklu görsel destekler
+            // Gemini entegrasyonu için optimizasyon
           },
           logs: true,
           onQueueUpdate: (update) => {
-            console.log('⏳ Queue update:', update)
+            console.log('⏳ Nano-Banana queue update:', update)
           }
         })
         
-        console.log('✅ FAL AI request completed')
+        console.log('✅ Nano-Banana edit completed')
       } else {
         // FAL AI flux-pro modelini kullan (text-to-image)
         console.log('🚀 Starting text-to-image generation with FAL AI')

@@ -507,7 +507,7 @@ export default function Home() {
             {/* Divider */}
             <div className="border-t border-white/10 pt-4">
               <p className="text-gray-400 text-sm">
-                <span className="text-purple-400">FAL AI Flux Pro</span> ile güçlendirilmiştir
+                <span className="text-purple-400">FAL AI Flux Pro</span> & <span className="text-green-400">Nano-Banana/Edit</span> ile güçlendirilmiştir
               </p>
             </div>
           </div>

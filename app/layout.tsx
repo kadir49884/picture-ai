@@ -19,6 +19,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
+      <head>
+        {/* Google Ads Conversion Tracking */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              function gtag_report_conversion(url) {
+                var callback = function () {
+                  if (typeof(url) != 'undefined') {
+                    window.location = url;
+                  }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD',
+                    'event_callback': callback
+                });
+                return false;
+              }
+            `
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <ErrorBoundary>
           <AuthProvider>

@@ -20,10 +20,19 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
   const handleGoogleAuth = async () => {
     setIsLoading(true)
     try {
-      await signIn('google', { 
+      const result = await signIn('google', { 
         callbackUrl: '/',
         redirect: false 
       })
+      
+      // Başarılı kayıt/giriş sonrası Google Ads conversion tracking
+      if (result?.ok) {
+        // gtag_report_conversion fonksiyonunu çağır
+        if (typeof window !== 'undefined' && (window as any).gtag_report_conversion) {
+          (window as any).gtag_report_conversion()
+        }
+      }
+      
       onClose()
     } catch (error) {
       console.error('Google auth error:', error)

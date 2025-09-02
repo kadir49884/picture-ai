@@ -23,7 +23,10 @@ fal.config({
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompt, mode, imageUrl, modelType = 'flux-pro' } = await request.json()
+    const { prompt, mode, imageUrl, modelType } = await request.json()
+    
+    // Otomatik model seçimi: Görsel→Görsel=Banana, Metin→Görsel=Flux
+    const selectedModel = modelType || (mode === 'image-to-image' ? 'nano-banana' : 'flux-pro')
 
     // Input validation
     if (!prompt) {
@@ -128,8 +131,9 @@ export async function POST(request: NextRequest) {
     
     try {
       if (mode === 'image-to-image') {
-        // Hibrit sistem: Model tipine göre seçim
-        if (modelType === 'nano-banana') {
+        // Otomatik olarak Nano-Banana kullan (görsel düzenleme)
+        console.log('🍌 Auto-selected: Nano-Banana for image-to-image')
+        if (selectedModel === 'nano-banana') {
           // FAL AI nano-banana/edit modelini kullan (image editing)
           console.log('🍌 Starting image editing with Nano-Banana/Edit model')
           console.log('📝 Prompt:', sanitizedPrompt)
@@ -170,10 +174,10 @@ export async function POST(request: NextRequest) {
           console.log('✅ Flux Pro image-to-image completed')
         }
       } else {
-        // Text-to-image: Her zaman Flux Pro kullan
-        console.log('🚀 Starting text-to-image generation with Flux Pro')
+        // Text-to-image: Otomatik olarak Flux Pro kullan
+        console.log('🚀 Auto-selected: Flux Pro for text-to-image')
         console.log('📝 Prompt:', sanitizedPrompt)
-        console.log('🎯 Model Type:', modelType)
+        console.log('🎯 Selected Model:', selectedModel)
         
         result = await fal.subscribe('fal-ai/flux-pro', {
           input: {

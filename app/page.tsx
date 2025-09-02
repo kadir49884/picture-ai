@@ -15,7 +15,9 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [mode, setMode] = useState<'text-to-image' | 'image-to-image'>('text-to-image')
-  const [modelType, setModelType] = useState<'flux-pro' | 'nano-banana'>('flux-pro')
+  
+  // Otomatik model seçimi: Görsel→Görsel=Banana, Metin→Görsel=Flux
+  const modelType = mode === 'image-to-image' ? 'nano-banana' : 'flux-pro'
   const [user, setUser] = useState<any>(null)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
@@ -288,35 +290,22 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Model Selection - Sadece image-to-image modunda göster */}
-        {mode === 'image-to-image' && (
-          <div className="mb-8 flex justify-center">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-2 border border-white/20">
-              <button
-                onClick={() => setModelType('flux-pro')}
-                className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                  modelType === 'flux-pro'
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                🚀 Flux Pro
-                <span className="block text-xs text-gray-300 mt-1">Yüksek kalite</span>
-              </button>
-              <button
-                onClick={() => setModelType('nano-banana')}
-                className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                  modelType === 'nano-banana'
-                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                🍌 Nano-Banana
-                <span className="block text-xs text-gray-300 mt-1">Hızlı düzenleme</span>
-              </button>
+        {/* Otomatik Model Bilgisi */}
+        <div className="mb-8 flex justify-center">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-3 border border-white/20">
+            <div className="flex items-center gap-2 text-white">
+              <span className="text-lg">
+                {mode === 'image-to-image' ? '🍌' : '🚀'}
+              </span>
+              <span className="font-medium">
+                {mode === 'image-to-image' ? 'Nano-Banana Edit' : 'Flux Pro'}
+              </span>
+              <span className="text-sm text-gray-300">
+                • {mode === 'image-to-image' ? 'Hızlı düzenleme' : 'Yüksek kalite'}
+              </span>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Main content */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">

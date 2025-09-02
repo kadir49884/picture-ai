@@ -50,6 +50,27 @@ export default function RootLayout({
                   'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
                 });
               }
+              
+              // Custom event tracking functions
+              function trackLogin() {
+                gtag('event', 'login', {
+                  'method': 'Google'
+                });
+                // Aynı zamanda conversion da gönder
+                gtag('event', 'conversion', {
+                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
+                });
+              }
+              
+              function trackSignUp() {
+                gtag('event', 'sign_up', {
+                  'method': 'Google'
+                });
+                // Aynı zamanda conversion da gönder
+                gtag('event', 'conversion', {
+                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
+                });
+              }
             `
           }}
         />

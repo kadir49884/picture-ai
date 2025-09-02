@@ -20,12 +20,20 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
   const handleGoogleAuth = async () => {
     setIsLoading(true)
     try {
-      // Google Ads conversion tracking'i hemen tetikle
+      // Google Ads conversion tracking'i mode'a göre tetikle
       if (typeof window !== 'undefined') {
-        if ((window as any).trackRegistrationConversion) {
-          (window as any).trackRegistrationConversion()
+        if (mode === 'login' && (window as any).trackLogin) {
+          console.log('🔑 Tracking login event...')
+          ;(window as any).trackLogin()
+        } else if (mode === 'register' && (window as any).trackSignUp) {
+          console.log('📝 Tracking sign up event...')
+          ;(window as any).trackSignUp()
+        } else if ((window as any).trackRegistrationConversion) {
+          console.log('🎯 Tracking generic conversion...')
+          ;(window as any).trackRegistrationConversion()
         } else if ((window as any).gtag_report_conversion) {
-          (window as any).gtag_report_conversion()
+          console.log('📊 Tracking with gtag_report_conversion...')
+          ;(window as any).gtag_report_conversion()
         }
       }
       
@@ -69,6 +77,24 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
               : 'Google ile kayıt olun ve 3 ücretsiz kredi kazanın!'}
           </p>
         </div>
+
+        {/* Test Button - Geçici */}
+        <button
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              if (mode === 'login' && (window as any).trackLogin) {
+                console.log('🔑 TEST: Tracking login event...')
+                ;(window as any).trackLogin()
+              } else if (mode === 'register' && (window as any).trackSignUp) {
+                console.log('📝 TEST: Tracking sign up event...')
+                ;(window as any).trackSignUp()
+              }
+            }
+          }}
+          className="w-full py-2 mb-4 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-lg transition-all duration-200"
+        >
+          🧪 Test {mode === 'login' ? 'Login' : 'SignUp'} Event
+        </button>
 
         {/* Google Auth Button */}
         <button

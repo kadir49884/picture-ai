@@ -30,13 +30,13 @@ export default function FullscreenImageModal({
       </button>
 
       {/* Image Container */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center p-4">
         <Image
           src={imageUrl}
           alt={prompt}
-          width={1200}
-          height={900}
-          className="object-contain w-full h-full max-w-none max-h-none"
+          width={1152}
+          height={896}
+          className="object-contain max-w-full max-h-full w-auto h-auto"
           sizes="100vw"
           priority
         />

@@ -415,13 +415,15 @@ export default function Home() {
           {generatedImage && (
             <div className="mt-8 fade-in">
               <div className="relative bg-black/20 rounded-xl p-4 border border-white/20">
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+                <div className="relative w-full rounded-lg bg-black/10 flex items-center justify-center min-h-[250px] md:min-h-[300px] max-h-[70vh] md:max-h-[80vh]">
                   <Image
                     src={generatedImage}
                     alt="Oluşturulan görsel"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    width={1152}
+                    height={896}
+                    className="object-contain rounded-lg max-w-full max-h-full w-auto h-auto"
+                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 70vw, 50vw"
+                    priority
                   />
                 </div>
                 

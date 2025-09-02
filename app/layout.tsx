@@ -20,10 +20,16 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
-        {/* Google Ads Conversion Tracking */}
+        {/* Google Analytics & Ads Tracking */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-951509513"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-951509513');
+              
               function gtag_report_conversion(url) {
                 var callback = function () {
                   if (typeof(url) != 'undefined') {

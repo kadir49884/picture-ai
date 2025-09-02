@@ -38,9 +38,17 @@ export default function RootLayout({
                 };
                 gtag('event', 'conversion', {
                     'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD',
+                    'transaction_id': '',
                     'event_callback': callback
                 });
                 return false;
+              }
+              
+              // Alternatif doğrudan conversion tracking
+              function trackRegistrationConversion() {
+                gtag('event', 'conversion', {
+                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
+                });
               }
             `
           }}

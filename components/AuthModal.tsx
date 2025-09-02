@@ -20,18 +20,20 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
   const handleGoogleAuth = async () => {
     setIsLoading(true)
     try {
-      const result = await signIn('google', { 
-        callbackUrl: '/',
-        redirect: false 
-      })
-      
-      // Başarılı kayıt/giriş sonrası Google Ads conversion tracking
-      if (result?.ok) {
-        // gtag_report_conversion fonksiyonunu çağır
-        if (typeof window !== 'undefined' && (window as any).gtag_report_conversion) {
+      // Google Ads conversion tracking'i hemen tetikle
+      if (typeof window !== 'undefined') {
+        if ((window as any).trackRegistrationConversion) {
+          (window as any).trackRegistrationConversion()
+        } else if ((window as any).gtag_report_conversion) {
           (window as any).gtag_report_conversion()
         }
       }
+      
+      // Sonra Google auth'u başlat
+      await signIn('google', { 
+        callbackUrl: '/',
+        redirect: true // Redirect'i true yap
+      })
       
       onClose()
     } catch (error) {

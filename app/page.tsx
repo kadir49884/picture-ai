@@ -290,22 +290,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Otomatik Model Bilgisi */}
-        <div className="mb-8 flex justify-center">
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-3 border border-white/20">
-            <div className="flex items-center gap-2 text-white">
-              <span className="text-lg">
-                {mode === 'image-to-image' ? '🍌' : '🚀'}
-              </span>
-              <span className="font-medium">
-                {mode === 'image-to-image' ? 'Nano-Banana Edit' : 'Flux Pro'}
-              </span>
-              <span className="text-sm text-gray-300">
-                • {mode === 'image-to-image' ? 'Hızlı düzenleme' : 'Yüksek kalite'}
-              </span>
-            </div>
-          </div>
-        </div>
+
 
         {/* Main content */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">

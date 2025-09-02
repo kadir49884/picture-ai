@@ -53,10 +53,7 @@ export default function FullscreenImageModal({
             <Info className="w-5 h-5" />
           </button>
           
-          {/* Model Badge */}
-          <div className="px-4 py-2 bg-black/50 text-white rounded-full text-sm font-medium">
-            {modelType === 'nano-banana' ? '🍌 Nano-Banana' : '🚀 Flux Pro'}
-          </div>
+
         </div>
 
         {/* Right Controls */}
@@ -112,7 +109,6 @@ export default function FullscreenImageModal({
         <div className="absolute top-20 left-4 z-10 bg-black/80 backdrop-blur-lg text-white p-6 rounded-2xl max-w-md">
           <h3 className="text-lg font-bold mb-3">Görsel Bilgileri</h3>
           <div className="space-y-2 text-sm">
-            <div><strong>Model:</strong> {modelType === 'nano-banana' ? 'Nano-Banana/Edit' : 'Flux Pro'}</div>
             <div><strong>Mod:</strong> {mode === 'image-to-image' ? 'Görsel → Görsel' : 'Metin → Görsel'}</div>
             <div><strong>Prompt:</strong> {prompt}</div>
             <div><strong>Oluşturma:</strong> {new Date().toLocaleString('tr-TR')}</div>

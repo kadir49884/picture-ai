@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
-        {/* Google Analytics & Ads Tracking */}
+        {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-951509513"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -29,48 +29,6 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'AW-951509513');
-              
-              function gtag_report_conversion(url) {
-                var callback = function () {
-                  if (typeof(url) != 'undefined') {
-                    window.location = url;
-                  }
-                };
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD',
-                    'transaction_id': '',
-                    'event_callback': callback
-                });
-                return false;
-              }
-              
-              // Alternatif doğrudan conversion tracking
-              function trackRegistrationConversion() {
-                gtag('event', 'conversion', {
-                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
-                });
-              }
-              
-              // Custom event tracking functions
-              function trackLogin() {
-                gtag('event', 'login', {
-                  'method': 'Google'
-                });
-                // Aynı zamanda conversion da gönder
-                gtag('event', 'conversion', {
-                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
-                });
-              }
-              
-              function trackSignUp() {
-                gtag('event', 'sign_up', {
-                  'method': 'Google'
-                });
-                // Aynı zamanda conversion da gönder
-                gtag('event', 'conversion', {
-                  'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD'
-                });
-              }
             `
           }}
         />

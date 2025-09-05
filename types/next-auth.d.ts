@@ -21,3 +21,12 @@ declare module 'next-auth' {
     total_generated?: number
   }
 }
+
+// Global window tiplerini tanımla
+declare global {
+  interface Window {
+    gtag_report_conversion: (url?: string) => boolean
+    dataLayer: any[]
+    gtag: (...args: any[]) => void
+  }
+}

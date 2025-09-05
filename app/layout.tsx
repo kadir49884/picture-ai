@@ -29,6 +29,23 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'AW-951509513');
+              
+              // Conversion tracking function
+              function gtag_report_conversion(url) {
+                var callback = function () {
+                  if (typeof(url) != 'undefined') {
+                    window.location = url;
+                  }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-951509513/H6PbCNXv5ZIbEInE28UD',
+                    'event_callback': callback
+                });
+                return false;
+              }
+              
+              // Global function for easy access
+              window.gtag_report_conversion = gtag_report_conversion;
             `
           }}
         />

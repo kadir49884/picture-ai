@@ -20,17 +20,10 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
   const handleGoogleAuth = async () => {
     setIsLoading(true)
     try {
-      // Google Ads conversion tracking'i mode'a göre tetikle
-      if (typeof window !== 'undefined') {
-        if (mode === 'login' && (window as any).trackLogin) {
-          (window as any).trackLogin()
-        } else if (mode === 'register' && (window as any).trackSignUp) {
-          (window as any).trackSignUp()
-        } else if ((window as any).trackRegistrationConversion) {
-          (window as any).trackRegistrationConversion()
-        } else if ((window as any).gtag_report_conversion) {
-          (window as any).gtag_report_conversion()
-        }
+      // Google Ads conversion tracking'i tetikle
+      if (typeof window !== 'undefined' && window.gtag_report_conversion) {
+        console.log(`${mode} için conversion tracking tetikleniyor`)
+        window.gtag_report_conversion()
       }
       
       // Sonra Google auth'u başlat

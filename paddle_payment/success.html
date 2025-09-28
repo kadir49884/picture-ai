@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        .success-icon {
+            font-size: 60px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>Payment Success</h1>
+        <p>Ödemeniz başarıyla tamamlandı!</p>
+        
+        <div class="user-info">
+            <strong>User ID:</strong> <span id="userIdDisplay">Yükleniyor...</span>
+        </div>
+        
+        <a href="index.html" class="back-btn">Ana Sayfaya Dön</a>
+    </div>
+
+    <script>
+        // LocalStorage'dan userId'yi al ve ekrana yazdır
+        window.onload = function() {
+            const userId = localStorage.getItem('userId');
+            const userIdElement = document.getElementById('userIdDisplay');
+            
+            if (userId) {
+                userIdElement.textContent = userId;
+            } else {
+                userIdElement.textContent = 'Bulunamadı';
+            }
+        };
+    </script>
+</body>
+</html>

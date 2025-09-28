@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paddle Payment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .subscribe-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🚀 Paddle Test</div>
+        <h1>Pro Subscription</h1>
+        
+        <div class="info">
+            <div class="price">$0.19/month</div>
+            <p>Unlimited access to all premium features. Renews automatically every month.</p>
+        </div>
+        
+        <button class="subscribe-btn" onclick="openCheckout()">Subscribe Now</button>
+    </div>
+
+    <!-- Paddle v2 Script -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    
+    <script>
+        // Paddle v2 Initialize - Sandbox Test Modu
+        Paddle.Initialize({
+            token: "test_848e771c6adb65d6cb53df30810", // live_ yerine test_ kullan
+            pwCustomer: undefined // Test modu için
+        });
+
+        function openCheckout() {
+            console.log('Paddle checkout test modunda...');
+            
+            // Test için confirm dialog
+            if (confirm('Paddle hesabınız henüz aktif değil. Test için Success sayfasına gitmek istiyor musunuz?')) {
+                // LocalStorage'a userId kaydet
+                localStorage.setItem('userId', '12345');
+                // Success sayfasına yönlendir
+                window.location.href = '/success.html';
+            }
+            
+            // Gerçek Paddle kodu (hesap aktif olunca kullanın):
+            /*
+            Paddle.Checkout.open({
+                items: [{
+                    priceId: "pri_01k66s7e3xarsf2qf3a9df49s",
+                    quantity: 1
+                }],
+                customData: {
+                    userId: "12345"
+                },
+                successUrl: window.location.origin + "/success.html"
+            });
+            */
+        }
+    </script>
+</body>
+</html>

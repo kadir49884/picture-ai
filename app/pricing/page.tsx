@@ -7,7 +7,7 @@ export default function Pricing() {
   const pricingPlan = {
     name: "Pro Monthly",
     price: 0.19,
-    priceId: "pro_monthly",
+    priceId: "pro_monthly", // This should be the actual Paddle product ID
     period: "month",
     features: [
       "Unlimited AI image generations",
@@ -17,6 +17,46 @@ export default function Pricing() {
       "Priority support",
       "Commercial usage rights"
     ]
+  }
+
+  const handlePaddleCheckout = () => {
+    if (typeof window !== 'undefined' && window.Paddle) {
+      // Get user ID from session/localStorage for passthrough
+      const userId = localStorage.getItem('userId') || 'anonymous'
+      
+      window.Paddle.Checkout.open({
+        product: 'pri_01k66s7e3xarsf2qf3a9df49s', // Example product ID from the test file
+        passthrough: JSON.stringify({ 
+          userId: userId,
+          planName: pricingPlan.name 
+        }),
+        successCallback: function(data) {
+          console.log('Payment successful:', data)
+          // Store subscription info
+          localStorage.setItem('subscription', JSON.stringify({
+            active: true,
+            plan: pricingPlan.name,
+            purchaseDate: new Date().toISOString()
+          }))
+          // Redirect to success page
+          window.location.href = '/success'
+        },
+        closeCallback: function() {
+          console.log('Checkout closed')
+        }
+      })
+    } else {
+      console.error('Paddle not loaded')
+      // Fallback for development
+      if (confirm('Paddle SDK not loaded. Simulate successful payment?')) {
+        localStorage.setItem('subscription', JSON.stringify({
+          active: true,
+          plan: pricingPlan.name,
+          purchaseDate: new Date().toISOString()
+        }))
+        window.location.href = '/success'
+      }
+    }
   }
 
   return (
@@ -92,8 +132,7 @@ export default function Pricing() {
             <button 
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all duration-200 text-lg"
               onClick={() => {
-                // TODO: Implement Paddle checkout
-                console.log(`Purchase ${pricingPlan.name} subscription`)
+                handlePaddleCheckout()
               }}
             >
               Subscribe to Pro

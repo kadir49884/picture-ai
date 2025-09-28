@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paddle Payment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .subscribe-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .subscribe-btn:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Paddle Payment Test</h1>
+        <button class="subscribe-btn" onclick="openCheckout()">Subscribe Now</button>
+    </div>
+
+    <!-- Paddle Script - Test Modu -->
+    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+    
+    <script>
+        // Test için basit checkout simülasyonu
+        function openCheckout() {
+            // Gerçek Paddle çalışmadığı için test simülasyonu
+            console.log('Paddle checkout simülasyonu başlatılıyor...');
+            
+            // Test için doğrudan success sayfasına yönlendir
+            if (confirm('Paddle checkout simülasyonu - Success sayfasına gitmek istiyor musunuz?')) {
+                // LocalStorage'a test userId kaydet
+                localStorage.setItem('userId', '12345');
+                // Success sayfasına yönlendir
+                window.location.href = 'success.html';
+            }
+        }
+        
+        // Sandbox Test için:
+        /*
+        Paddle.Setup({
+            vendor: 848771, // veya token: 'test_848e771c6adb65d6cb53df30810' (test_ ile başlayan)
+            environment: 'sandbox'
+        });
+        
+        function openCheckout() {
+            Paddle.Checkout.open({
+                product: 'pri_01k66s7e3xarsf2qf3a9df49s',
+                passthrough: JSON.stringify({ userId: "12345" }),
+                successCallback: function(data) {
+                    localStorage.setItem('userId', '12345');
+                    window.location.href = 'success.html';
+                }
+            });
+        }
+        */
+    </script>
+</body>
+</html>

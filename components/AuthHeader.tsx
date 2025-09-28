@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { User, LogOut, CreditCard } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
 import AuthModal from './AuthModal'
 
 interface AuthHeaderProps {
@@ -79,13 +80,17 @@ export default function AuthHeader({ userCredits }: AuthHeaderProps) {
     return (
       <div className="flex items-center gap-4">
         {/* Credit Display */}
-        <div className="bg-white/10 backdrop-blur-lg rounded-lg px-3 py-2 border border-white/20 flex items-center gap-2">
+        <Link 
+          href="/pricing"
+          className="bg-white/10 hover:bg-white/20 backdrop-blur-lg rounded-lg px-3 py-2 border border-white/20 flex items-center gap-2 transition-colors"
+          title="Buy more credits"
+        >
           <CreditCard className="w-4 h-4 text-yellow-400" />
           <span className="text-white font-semibold text-sm">
             {userCredits !== undefined ? userCredits : (user?.credits || currentUser?.credits || 3)}
           </span>
-          <span className="text-gray-300 text-xs">kredi</span>
-        </div>
+          <span className="text-gray-300 text-xs">credits</span>
+        </Link>
         
         {/* User Menu */}
         <div className="bg-white/10 backdrop-blur-lg rounded-lg px-3 py-2 border border-white/20 flex items-center gap-3">

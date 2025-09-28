@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Sparkles, Download, Loader, ImageIcon, Wand2, Upload, RotateCcw, Maximize2, Minimize2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import AuthHeader from '@/components/AuthHeader'
 import ShareButton from '@/components/ShareButton'
 import FullscreenImageModal from '@/components/FullscreenImageModal'
@@ -514,8 +515,37 @@ export default function Home() {
               />
             </div>
             
-            {/* Divider */}
+            {/* Legal Links */}
             <div className="border-t border-white/10 pt-4">
+              <div className="flex flex-wrap justify-center gap-4 mb-4 text-sm">
+                <Link 
+                  href="/pricing" 
+                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  Pricing
+                </Link>
+                <span className="text-gray-600">•</span>
+                <Link 
+                  href="/terms" 
+                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  Terms of Service
+                </Link>
+                <span className="text-gray-600">•</span>
+                <Link 
+                  href="/privacy" 
+                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <span className="text-gray-600">•</span>
+                <Link 
+                  href="/refund" 
+                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  Refund Policy
+                </Link>
+              </div>
               <p className="text-gray-400 text-sm">
                 <span className="text-purple-400">FAL AI Flux Pro</span> & <span className="text-green-400">Nano-Banana/Edit</span> ile güçlendirilmiştir
               </p>

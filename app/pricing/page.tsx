@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function Pricing() {
   const pricingPlan = {
     name: "Pro Monthly",
-    price: 0.19,
+    price: 0.99,
     priceId: "pro_monthly", // This should be the actual Paddle product ID
     period: "month",
     features: [
@@ -152,7 +152,7 @@ export default function Pricing() {
             <div>
               <h3 className="text-lg font-medium text-white mb-2">How does the Pro subscription work?</h3>
               <p className="text-gray-300 text-sm mb-4">
-                For just $0.19/month, you get unlimited AI image generations with no limits. 
+                For just $0.99/month, you get unlimited AI image generations with no limits. 
                 Perfect for regular users and professionals.
               </p>
 

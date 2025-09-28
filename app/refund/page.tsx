@@ -34,16 +34,17 @@ export default function RefundPolicy() {
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-white mb-4">1. General Refund Policy</h2>
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-4">
-                <p className="text-red-200 font-medium">
-                  ⚠️ Important: Credit packages are digital products and therefore 
-                  <strong> cannot be refunded</strong> after purchase.
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
+                <p className="text-blue-200 font-medium">
+                  📋 Digital Content Notice: Our subscription service provides digital content that is supplied immediately upon purchase. 
+                  By purchasing, you consent to immediate supply and acknowledge that you lose the statutory withdrawal right, 
+                  except where required by applicable law.
                 </p>
               </div>
               <p className="text-gray-300 mb-4">
-                This policy is applied due to the instant delivery and consumption of digital content. 
-                When you complete the purchase, credits are automatically loaded to your account 
-                and become ready for use.
+                As our service provides unlimited access to AI image generation (digital content) that begins immediately 
+                after subscription activation, standard withdrawal rights do not apply. However, we provide refunds in 
+                specific circumstances outlined below.
               </p>
             </section>
 
@@ -55,10 +56,10 @@ export default function RefundPolicy() {
               
               <h3 className="text-xl font-medium text-white mb-3">Technical Issues</h3>
               <ul className="text-gray-300 space-y-2 list-disc list-inside mb-4">
-                <li>Payment was completed but credits were not loaded to account</li>
-                <li>Credit loss due to system error</li>
-                <li>Credit consumption due to technical failure during image generation</li>
-                <li>Double payment situation</li>
+                <li>Payment was completed but subscription was not activated</li>
+                <li>Service unavailable due to system error</li>
+                <li>Double payment/billing error</li>
+                <li>Subscription not working due to technical failure</li>
               </ul>
 
               <h3 className="text-xl font-medium text-white mb-3">Fraud</h3>

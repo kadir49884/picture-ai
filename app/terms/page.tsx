@@ -26,6 +26,14 @@ export default function TermsOfService() {
               <p className="text-gray-300 text-sm mb-6">
                 <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-US')}
               </p>
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+                <p className="text-blue-200 text-sm mb-2">
+                  <strong>Service Provider:</strong> This service is provided by Kadir Çelik (sole proprietor), trading as "Picture AI".
+                </p>
+                <p className="text-blue-200 text-sm">
+                  <strong>Merchant of Record:</strong> Paddle.com Market Ltd is the Merchant of Record for all orders; Paddle handles billing, tax and receipts.
+                </p>
+              </div>
             </div>
 
             <section className="mb-8">

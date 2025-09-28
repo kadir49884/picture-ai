@@ -114,8 +114,11 @@ export default function Pricing() {
                   <Sparkles className="w-6 h-6 text-purple-400" />
                   <span className="text-xl font-semibold text-white">Unlimited Access</span>
                 </div>
-                <p className="text-gray-300 text-sm">
+                <p className="text-gray-300 text-sm mb-2">
                   Generate as many images as you want
+                </p>
+                <p className="text-blue-200 text-xs">
+                  Billing handled by Paddle • Taxes included where applicable
                 </p>
               </div>
             </div>
@@ -139,8 +142,23 @@ export default function Pricing() {
             </button>
             
             <p className="text-center text-gray-400 text-sm mt-4">
-              Cancel anytime • No hidden fees
+              Cancel anytime • No hidden fees • Monthly renewal
             </p>
+            
+            {/* Detailed Deliverables */}
+            <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+              <h4 className="text-white font-medium mb-3">What's Included:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-300">
+                <div>• Unlimited AI image generations</div>
+                <div>• High-resolution downloads (1152x896)</div>
+                <div>• Text-to-image creation</div>
+                <div>• Image-to-image editing</div>
+                <div>• Commercial usage rights</div>
+                <div>• Priority customer support</div>
+                <div>• No watermarks</div>
+                <div>• Instant access</div>
+              </div>
+            </div>
           </div>
         </div>
 

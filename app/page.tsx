@@ -545,6 +545,15 @@ export default function Home() {
                 >
                   Refund Policy
                 </Link>
+                <span className="text-gray-600">•</span>
+                <a 
+                  href="https://github.com/kadir49884/picture-ai/issues" 
+                  className="text-gray-400 hover:text-purple-400 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Contact
+                </a>
               </div>
               <p className="text-gray-400 text-sm">
                 <span className="text-purple-400">FAL AI Flux Pro</span> & <span className="text-green-400">Nano-Banana/Edit</span> ile güçlendirilmiştir

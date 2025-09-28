@@ -22,6 +22,16 @@ export default function TermsOfService() {
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
           <div className="prose prose-invert max-w-none">
             
+            {/* Service Provider Statement - Top Priority */}
+            <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border-2 border-green-500/40 rounded-xl p-6 mb-8">
+              <h2 className="text-white font-bold text-xl mb-3 flex items-center gap-2">
+                ⚖️ Service Provider
+              </h2>
+              <p className="text-white text-lg leading-relaxed">
+                This service is provided by <strong>Kadir Çelik</strong> (sole proprietor), trading as <strong>"Picture AI"</strong>.
+              </p>
+            </div>
+            
             <div className="mb-8">
               <p className="text-gray-300 text-sm mb-6">
                 <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-US')}

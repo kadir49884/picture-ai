@@ -265,10 +265,19 @@ export default function Home() {
               Picture AI
             </h1>
           </div>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-4">
             Hayal gücünüzü gerçeğe dönüştürün. Sadece birkaç kelime yazın, 
             AI muhteşem görseller oluştursun.
           </p>
+          <div className="flex items-center justify-center gap-4 text-sm">
+            <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30">
+              3 Free Credits
+            </span>
+            <span className="text-gray-400">•</span>
+            <span className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full border border-purple-500/30">
+              Pro: $0.99/month
+            </span>
+          </div>
         </div>
 
         {/* Mode Selection */}

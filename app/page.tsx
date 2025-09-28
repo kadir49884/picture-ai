@@ -240,12 +240,20 @@ export default function Home() {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-slow"></div>
       </div>
 
-      <div className="container max-w-4xl mx-auto relative z-10">
-        {/* Header with Auth and Share */}
-        <div className="w-full flex justify-between items-center mb-8">
-          <ShareButton className="" />
+        <div className="container max-w-4xl mx-auto relative z-10">
+        {/* Navigation Header */}
+        <nav className="w-full flex justify-between items-center mb-8 bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/10">
+          <div className="flex items-center gap-6">
+            <Link href="/" className="text-2xl font-bold text-white">Picture AI</Link>
+            <div className="hidden md:flex items-center gap-4 text-sm">
+              <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link>
+              <Link href="/terms" className="text-gray-300 hover:text-white transition-colors">Terms</Link>
+              <Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">Privacy</Link>
+              <Link href="/refund" className="text-gray-300 hover:text-white transition-colors">Refund</Link>
+            </div>
+          </div>
           <AuthHeader userCredits={user?.credits} />
-        </div>
+        </nav>
 
         {/* Header */}
         <div className="text-center mb-12 fade-in">

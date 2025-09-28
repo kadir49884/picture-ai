@@ -26,13 +26,24 @@ export default function TermsOfService() {
               <p className="text-gray-300 text-sm mb-6">
                 <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-US')}
               </p>
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
-                <p className="text-blue-200 text-sm mb-2">
-                  <strong>Service Provider:</strong> This service is provided by Kadir Çelik (sole proprietor), trading as "Picture AI".
-                </p>
-                <p className="text-blue-200 text-sm">
-                  <strong>Merchant of Record:</strong> Paddle.com Market Ltd is the Merchant of Record for all orders; Paddle handles billing, tax and receipts.
-                </p>
+              <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-2 border-blue-500/40 rounded-xl p-6 mb-8">
+                <h3 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
+                  🏢 Legal Information
+                </h3>
+                <div className="space-y-3">
+                  <div className="bg-white/10 rounded-lg p-4">
+                    <p className="text-blue-200 font-medium mb-1">Service Provider:</p>
+                    <p className="text-white text-lg">
+                      This service is provided by <strong>Kadir Çelik</strong> (sole proprietor), trading as <strong>"Picture AI"</strong>.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-4">
+                    <p className="text-purple-200 font-medium mb-1">Merchant of Record:</p>
+                    <p className="text-white text-lg">
+                      <strong>Paddle.com Market Ltd</strong> is the Merchant of Record for all orders; Paddle handles billing, tax and receipts.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

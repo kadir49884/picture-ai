@@ -145,18 +145,84 @@ export default function Pricing() {
               Cancel anytime • No hidden fees • Monthly renewal
             </p>
             
-            {/* Detailed Deliverables */}
-            <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-              <h4 className="text-white font-medium mb-3">What's Included:</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-300">
-                <div>• Unlimited AI image generations</div>
-                <div>• High-resolution downloads (1152x896)</div>
-                <div>• Text-to-image creation</div>
-                <div>• Image-to-image editing</div>
-                <div>• Commercial usage rights</div>
-                <div>• Priority customer support</div>
-                <div>• No watermarks</div>
-                <div>• Instant access</div>
+            {/* Detailed Deliverables - Professional Table */}
+            <div className="mt-6 bg-gradient-to-r from-white/10 to-white/5 rounded-xl border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-purple-600/20 to-cyan-600/20 p-4 border-b border-white/10">
+                <h4 className="text-white font-semibold text-lg">📦 Complete Package Deliverables</h4>
+                <p className="text-gray-300 text-sm mt-1">Everything included in your $0.99/month subscription</p>
+              </div>
+              
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Core Features */}
+                  <div className="space-y-3">
+                    <h5 className="text-purple-400 font-medium text-sm uppercase tracking-wide">Core Features</h5>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Unlimited AI image generations</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Text-to-image creation</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Image-to-image editing</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">High-resolution downloads (1152×896)</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Premium Benefits */}
+                  <div className="space-y-3">
+                    <h5 className="text-cyan-400 font-medium text-sm uppercase tracking-wide">Premium Benefits</h5>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Commercial usage rights</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">No watermarks</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Priority customer support</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg">
+                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-white text-sm">Instant access activation</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Technical Specifications */}
+                <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg border border-blue-500/20">
+                  <h5 className="text-blue-400 font-medium mb-3">🔧 Technical Specifications</h5>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div className="text-center">
+                      <div className="text-white font-medium">Resolution</div>
+                      <div className="text-gray-300">1152×896px</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-white font-medium">AI Models</div>
+                      <div className="text-gray-300">Flux Pro + Nano-Banana</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-white font-medium">Format</div>
+                      <div className="text-gray-300">JPEG/PNG</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-white font-medium">Usage</div>
+                      <div className="text-gray-300">Commercial OK</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

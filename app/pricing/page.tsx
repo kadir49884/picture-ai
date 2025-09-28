@@ -4,67 +4,20 @@ import { ArrowLeft, Check, Sparkles, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Pricing() {
-  const pricingPlans = [
-    {
-      name: "Starter",
-      credits: 10,
-      price: 5,
-      priceId: "starter_pack",
-      popular: false,
-      features: [
-        "10 AI image generations",
-        "High-quality outputs",
-        "Text-to-image & Image-to-image",
-        "Download full resolution",
-        "No expiration"
-      ]
-    },
-    {
-      name: "Popular",
-      credits: 25,
-      price: 10,
-      priceId: "popular_pack",
-      popular: true,
-      features: [
-        "25 AI image generations",
-        "High-quality outputs",
-        "Text-to-image & Image-to-image",
-        "Download full resolution",
-        "No expiration",
-        "Best value for money"
-      ]
-    },
-    {
-      name: "Pro",
-      credits: 50,
-      price: 18,
-      priceId: "pro_pack",
-      popular: false,
-      features: [
-        "50 AI image generations",
-        "High-quality outputs",
-        "Text-to-image & Image-to-image",
-        "Download full resolution",
-        "No expiration",
-        "Perfect for professionals"
-      ]
-    },
-    {
-      name: "Ultimate",
-      credits: 100,
-      price: 30,
-      priceId: "ultimate_pack",
-      popular: false,
-      features: [
-        "100 AI image generations",
-        "High-quality outputs",
-        "Text-to-image & Image-to-image",
-        "Download full resolution",
-        "No expiration",
-        "Maximum value"
-      ]
-    }
-  ]
+  const pricingPlan = {
+    name: "Pro Monthly",
+    price: 0.19,
+    priceId: "pro_monthly",
+    period: "month",
+    features: [
+      "Unlimited AI image generations",
+      "High-quality outputs",
+      "Text-to-image & Image-to-image",
+      "Download full resolution",
+      "Priority support",
+      "Commercial usage rights"
+    ]
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
@@ -101,66 +54,55 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {pricingPlans.map((plan, index) => (
-            <div 
-              key={index} 
-              className={`relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border transition-all duration-200 hover:scale-105 ${
-                plan.popular 
-                  ? 'border-purple-500 shadow-lg shadow-purple-500/20' 
-                  : 'border-white/20 hover:border-purple-400/50'
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-              
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-semibold text-white mb-2">{plan.name}</h3>
-                <div className="mb-4">
-                  <span className="text-3xl font-bold text-white">${plan.price}</span>
-                  <span className="text-gray-400 ml-1">USD</span>
-                </div>
-                <div className="bg-white/10 rounded-lg p-3 mb-4">
-                  <div className="flex items-center justify-center gap-2">
-                    <CreditCard className="w-5 h-5 text-purple-400" />
-                    <span className="text-lg font-semibold text-white">{plan.credits} Credits</span>
-                  </div>
-                  <p className="text-gray-300 text-sm mt-1">
-                    ${(plan.price / plan.credits).toFixed(2)} per image
-                  </p>
-                </div>
-              </div>
-
-              <ul className="space-y-3 mb-6">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300 text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button 
-                className={`w-full py-3 rounded-lg font-medium transition-all duration-200 ${
-                  plan.popular
-                    ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white'
-                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-                }`}
-                onClick={() => {
-                  // TODO: Implement Paddle checkout
-                  console.log(`Purchase ${plan.name} package`)
-                }}
-              >
-                Buy {plan.name}
-              </button>
+        {/* Pricing Card */}
+        <div className="flex justify-center mb-12">
+          <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-purple-500 shadow-lg shadow-purple-500/20 max-w-md w-full">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+              <span className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-2 rounded-full text-sm font-medium">
+                Pro Plan
+              </span>
             </div>
-          ))}
+            
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-white mb-4">{pricingPlan.name}</h3>
+              <div className="mb-6">
+                <span className="text-4xl font-bold text-white">${pricingPlan.price}</span>
+                <span className="text-gray-400 ml-2">/ {pricingPlan.period}</span>
+              </div>
+              <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-6 h-6 text-purple-400" />
+                  <span className="text-xl font-semibold text-white">Unlimited Access</span>
+                </div>
+                <p className="text-gray-300 text-sm">
+                  Generate as many images as you want
+                </p>
+              </div>
+            </div>
+
+            <ul className="space-y-4 mb-8">
+              {pricingPlan.features.map((feature, featureIndex) => (
+                <li key={featureIndex} className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <button 
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all duration-200 text-lg"
+              onClick={() => {
+                // TODO: Implement Paddle checkout
+                console.log(`Purchase ${pricingPlan.name} subscription`)
+              }}
+            >
+              Subscribe to Pro
+            </button>
+            
+            <p className="text-center text-gray-400 text-sm mt-4">
+              Cancel anytime • No hidden fees
+            </p>
+          </div>
         </div>
 
         {/* FAQ Section */}
@@ -169,22 +111,22 @@ export default function Pricing() {
           
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-lg font-medium text-white mb-2">How do credits work?</h3>
+              <h3 className="text-lg font-medium text-white mb-2">How does the Pro subscription work?</h3>
               <p className="text-gray-300 text-sm mb-4">
-                Each image generation (text-to-image or image-to-image) consumes 1 credit. 
-                Credits never expire and remain in your account until used.
+                For just $0.19/month, you get unlimited AI image generations with no limits. 
+                Perfect for regular users and professionals.
               </p>
 
               <h3 className="text-lg font-medium text-white mb-2">What if generation fails?</h3>
               <p className="text-gray-300 text-sm mb-4">
-                If image generation fails due to technical issues, your credit will be 
-                automatically refunded to your account.
+                If image generation fails due to technical issues, you can simply try again. 
+                No limits means no worries about failed generations.
               </p>
 
-              <h3 className="text-lg font-medium text-white mb-2">Can I get a refund?</h3>
+              <h3 className="text-lg font-medium text-white mb-2">Can I cancel anytime?</h3>
               <p className="text-gray-300 text-sm">
-                Credits are digital products and generally non-refundable. However, we offer 
-                refunds for technical issues. See our{' '}
+                Yes! You can cancel your subscription at any time. No long-term commitments 
+                or cancellation fees. See our{' '}
                 <Link href="/refund" className="text-purple-400 hover:text-purple-300">
                   Refund Policy
                 </Link>{' '}
@@ -205,10 +147,10 @@ export default function Pricing() {
                 We never store your payment information on our servers.
               </p>
 
-              <h3 className="text-lg font-medium text-white mb-2">Can I buy more credits anytime?</h3>
+              <h3 className="text-lg font-medium text-white mb-2">Do I get free credits too?</h3>
               <p className="text-gray-300 text-sm">
-                Absolutely! You can purchase additional credit packages at any time. 
-                Credits are added to your existing balance.
+                New users still get 3 free credits to try Picture AI before subscribing. 
+                Once you subscribe, you get unlimited generations.
               </p>
             </div>
           </div>
@@ -245,10 +187,10 @@ export default function Pricing() {
               <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <CreditCard className="w-6 h-6 text-blue-400" />
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">No Expiration</h3>
+              <h3 className="text-lg font-medium text-white mb-2">Unlimited Access</h3>
               <p className="text-gray-300 text-sm">
-                Your credits never expire. Use them at your own pace, whenever inspiration 
-                strikes.
+                Generate as many images as you want with your Pro subscription. 
+                No limits, no restrictions.
               </p>
             </div>
           </div>

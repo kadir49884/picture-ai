@@ -49,22 +49,6 @@ export default function RootLayout({
             `
           }}
         />
-        
-        {/* Paddle SDK */}
-        <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Paddle SDK initialization will be done in components
-              if (typeof window !== 'undefined' && window.Paddle) {
-                window.Paddle.Setup({
-                  vendor: 848771, // Test vendor ID from the example
-                  environment: 'sandbox' // Use sandbox for testing
-                });
-              }
-            `
-          }}
-        />
       </head>
       <body className={inter.className}>
         <ErrorBoundary>

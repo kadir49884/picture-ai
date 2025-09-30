@@ -2,12 +2,13 @@
 
 import { ArrowLeft, Check, Sparkles, CreditCard } from 'lucide-react'
 import Link from 'next/link'
+import { createLemonSqueezyCheckout, LEMONSQUEEZY_PRODUCTS } from '@/lib/lemonsqueezy'
 
 export default function Pricing() {
   const pricingPlan = {
     name: "Pro Monthly",
     price: 0.99,
-    priceId: "pro_monthly", // This should be the actual Paddle product ID
+    priceId: LEMONSQUEEZY_PRODUCTS.PRO_MONTHLY, // LemonSqueezy product ID from environment
     period: "month",
     features: [
       "Unlimited AI image generations",
@@ -19,36 +20,30 @@ export default function Pricing() {
     ]
   }
 
-  const handlePaddleCheckout = () => {
-    if (typeof window !== 'undefined' && window.Paddle) {
-      // Get user ID from session/localStorage for passthrough
+  const handleLemonSqueezyCheckout = async () => {
+    try {
+      // Get user ID from session/localStorage
       const userId = localStorage.getItem('userId') || 'anonymous'
       
-      window.Paddle.Checkout.open({
-        product: 'pri_01k66s7e3xarsf2qf3a9df49s', // Example product ID from the test file
-        passthrough: JSON.stringify({ 
-          userId: userId,
-          planName: pricingPlan.name 
-        }),
-        successCallback: function(data) {
-          console.log('Payment successful:', data)
-          // Store subscription info
-          localStorage.setItem('subscription', JSON.stringify({
-            active: true,
-            plan: pricingPlan.name,
-            purchaseDate: new Date().toISOString()
-          }))
-          // Redirect to success page
-          window.location.href = '/success'
-        },
-        closeCallback: function() {
-          console.log('Checkout closed')
-        }
+      // Create LemonSqueezy checkout
+      const checkoutUrl = await createLemonSqueezyCheckout({
+        productId: pricingPlan.priceId,
+        userId: userId,
+        planName: pricingPlan.name,
+        successUrl: window.location.origin + '/success',
+        cancelUrl: window.location.origin + '/pricing'
       })
-    } else {
-      console.error('Paddle not loaded')
+      
+      if (checkoutUrl) {
+        // Redirect to LemonSqueezy checkout
+        window.location.href = checkoutUrl
+      } else {
+        throw new Error('Failed to create checkout URL')
+      }
+    } catch (error) {
+      console.error('LemonSqueezy checkout failed:', error)
       // Fallback for development
-      if (confirm('Paddle SDK not loaded. Simulate successful payment?')) {
+      if (confirm('LemonSqueezy checkout failed. Simulate successful payment for testing?')) {
         localStorage.setItem('subscription', JSON.stringify({
           active: true,
           plan: pricingPlan.name,
@@ -118,7 +113,7 @@ export default function Pricing() {
                   Generate as many images as you want
                 </p>
                 <p className="text-blue-200 text-xs">
-                  Billing handled by Paddle • Taxes included where applicable
+                  Billing handled by LemonSqueezy • Taxes included where applicable
                 </p>
               </div>
             </div>
@@ -135,7 +130,7 @@ export default function Pricing() {
             <button 
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all duration-200 text-lg"
               onClick={() => {
-                handlePaddleCheckout()
+                handleLemonSqueezyCheckout()
               }}
             >
               Subscribe to Pro
@@ -261,12 +256,12 @@ export default function Pricing() {
               <h3 className="text-lg font-medium text-white mb-2">What payment methods do you accept?</h3>
               <p className="text-gray-300 text-sm mb-4">
                 We accept all major credit cards, PayPal, and other payment methods 
-                through our secure Paddle payment system.
+                through our secure LemonSqueezy payment system.
               </p>
 
               <h3 className="text-lg font-medium text-white mb-2">Is my payment information secure?</h3>
               <p className="text-gray-300 text-sm mb-4">
-                Yes! We use Paddle for payment processing, which is PCI DSS compliant. 
+                Yes! We use LemonSqueezy for payment processing, which is PCI DSS compliant. 
                 We never store your payment information on our servers.
               </p>
 

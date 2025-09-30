@@ -73,7 +73,7 @@ export default function RefundPolicy() {
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
                 <li>Accidentally purchasing multiple packages (within 24 hours)</li>
                 <li>Unauthorized purchase by children (with parental consent)</li>
-                <li>Errors in Paddle payment system</li>
+                <li>Errors in LemonSqueezy payment system</li>
               </ul>
             </section>
 
@@ -96,7 +96,7 @@ export default function RefundPolicy() {
               <ul className="text-gray-300 space-y-2 list-disc list-inside mb-4">
                 <li>Your account email address</li>
                 <li>Purchase date and time</li>
-                <li>Paddle transaction ID (if available)</li>
+                <li>LemonSqueezy transaction ID (if available)</li>
                 <li>Detailed description of the problem experienced</li>
                 <li>Screenshots (if available)</li>
               </ul>
@@ -105,7 +105,7 @@ export default function RefundPolicy() {
               <ol className="text-gray-300 space-y-2 list-decimal list-inside">
                 <li>We receive and start reviewing your request within 24 hours</li>
                 <li>We check technical logs and payment records</li>
-                <li>We coordinate with Paddle when necessary</li>
+                <li>We coordinate with LemonSqueezy when necessary</li>
                 <li>We inform you about the result within 48-72 hours</li>
                 <li>Approved refunds return to your account within 5-10 business days</li>
               </ol>
@@ -119,7 +119,7 @@ export default function RefundPolicy() {
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
                 <li><strong>Credit Card Refund:</strong> Returns to your original payment method</li>
                 <li><strong>Account Credit:</strong> May be given as extra credit depending on the situation</li>
-                <li><strong>Paddle Refund:</strong> Processed through Paddle payment system</li>
+                <li><strong>LemonSqueezy Refund:</strong> Processed through LemonSqueezy payment system</li>
               </ul>
             </section>
 
@@ -149,7 +149,7 @@ export default function RefundPolicy() {
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
                 <li>Your account may be temporarily suspended in case of chargeback</li>
                 <li>Please try to find a solution with our support team first</li>
-                <li>Official dispute process is available through Paddle payment system</li>
+                <li>Official dispute process is available through LemonSqueezy payment system</li>
                 <li>We reserve the right to initiate legal action in case of unjust chargeback</li>
               </ul>
             </section>

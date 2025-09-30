@@ -81,7 +81,7 @@ export default function PrivacyPolicy() {
                 We do not share your personal data with third parties except in the following situations:
               </p>
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
-                <li><strong>Service Providers:</strong> FAL AI (image generation), Paddle (payments)</li>
+                <li><strong>Service Providers:</strong> FAL AI (image generation), LemonSqueezy (payments)</li>
                 <li><strong>Legal Obligation:</strong> Court order or legal request</li>
                 <li><strong>Security:</strong> Fraud detection and prevention</li>
                 <li><strong>User Consent:</strong> When you have given explicit consent</li>
@@ -94,7 +94,7 @@ export default function PrivacyPolicy() {
                 <li><strong>Account Information:</strong> Stored while account is active</li>
                 <li><strong>Generated Images:</strong> Temporarily stored for 24 hours</li>
                 <li><strong>Uploaded Images:</strong> Deleted after processing is complete</li>
-                <li><strong>Payment Information:</strong> Securely processed by Paddle</li>
+                <li><strong>Payment Information:</strong> Securely processed by LemonSqueezy</li>
                 <li><strong>Log Data:</strong> Stored for maximum 90 days</li>
               </ul>
             </section>
@@ -156,9 +156,9 @@ export default function PrivacyPolicy() {
                 We use FAL AI service for image generation. Your prompts and images are processed temporarily.
               </p>
 
-              <h3 className="text-xl font-medium text-white mb-3">Paddle</h3>
+              <h3 className="text-xl font-medium text-white mb-3">LemonSqueezy</h3>
               <p className="text-gray-300 mb-4">
-                We use Paddle for payment processing. Your payment information is processed directly by Paddle.
+                We use LemonSqueezy for payment processing. Your payment information is processed directly by LemonSqueezy.
               </p>
 
               <h3 className="text-xl font-medium text-white mb-3">Vercel</h3>
@@ -183,7 +183,7 @@ export default function PrivacyPolicy() {
               </p>
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
                 <li>United States (Vercel, Google, FAL AI)</li>
-                <li>European Union (Paddle)</li>
+                <li>United States (LemonSqueezy)</li>
               </ul>
               <p className="text-gray-300 mt-4">
                 All data transfers are carried out with appropriate security measures.

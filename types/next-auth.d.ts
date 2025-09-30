@@ -28,16 +28,5 @@ declare global {
     gtag_report_conversion: (url?: string) => boolean
     dataLayer: any[]
     gtag: (...args: any[]) => void
-    Paddle: {
-      Setup: (config: { vendor: number; environment: string }) => void
-      Checkout: {
-        open: (options: {
-          product?: string
-          passthrough?: string
-          successCallback?: (data: any) => void
-          closeCallback?: () => void
-        }) => void
-      }
-    }
   }
 }

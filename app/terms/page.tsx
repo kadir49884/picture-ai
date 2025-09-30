@@ -50,7 +50,7 @@ export default function TermsOfService() {
                   <div className="bg-white/10 rounded-lg p-4">
                     <p className="text-purple-200 font-medium mb-1">Merchant of Record:</p>
                     <p className="text-white text-lg">
-                      <strong>Paddle.com Market Ltd</strong> is the Merchant of Record for all orders; Paddle handles billing, tax and receipts.
+                      <strong>LemonSqueezy</strong> is the Merchant of Record for all orders; LemonSqueezy handles billing, tax and receipts.
                     </p>
                   </div>
                 </div>
@@ -81,7 +81,7 @@ export default function TermsOfService() {
               <ul className="text-gray-300 space-y-2 list-disc list-inside">
                 <li>New users start with 3 free credits</li>
                 <li>Each image generation consumes 1 credit</li>
-                <li>Credit packages can be purchased through the Paddle payment system</li>
+                <li>Credit packages can be purchased through the LemonSqueezy payment system</li>
                 <li>Credits are non-refundable but remain in your account indefinitely</li>
                 <li>Payments are processed securely and we do not store personal payment information</li>
               </ul>

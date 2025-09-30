@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, CreditCard } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 
@@ -14,6 +14,20 @@ interface AuthModalProps {
 export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModalProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // Modal açıkken body scroll'unu engelle
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    
+    // Cleanup
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
@@ -42,8 +56,8 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md border border-white/20 relative">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
+      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md border border-white/20 relative transform translate-y-0">
         {/* Close button */}
         <button
           onClick={onClose}

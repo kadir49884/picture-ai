@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { X, CreditCard } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 
@@ -14,22 +15,31 @@ interface AuthModalProps {
 export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModalProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  // Client-side mounting kontrolü
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Modal açıkken body scroll'unu engelle
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = '0px'
     } else {
       document.body.style.overflow = 'unset'
+      document.body.style.paddingRight = '0px'
     }
     
     // Cleanup
     return () => {
       document.body.style.overflow = 'unset'
+      document.body.style.paddingRight = '0px'
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
   const handleGoogleAuth = async () => {
     setIsLoading(true)
@@ -55,9 +65,36 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
     }
   }
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md border border-white/20 relative transform translate-y-0">
+  const modalContent = (
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" 
+      style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        bottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px'
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose()
+        }
+      }}
+    >
+      <div 
+        className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md border border-white/20 relative"
+        style={{
+          margin: 'auto',
+          transform: 'translateY(0)',
+          maxHeight: '90vh',
+          overflowY: 'auto'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Close button */}
         <button
           onClick={onClose}
@@ -121,4 +158,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSuccess }: AuthModa
       </div>
     </div>
   )
+
+  // Portal ile modal'ı body'ye mount et
+  return createPortal(modalContent, document.body)
 }
